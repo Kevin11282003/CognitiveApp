@@ -1,19 +1,36 @@
-import { useState } from 'react'
-import './Style.css'
+import { useState, useEffect } from 'react';
+import './Style.css';
 
 function Filtro({ onTipoChange }) {
-  const tipos = [
-    "All",
-    "normal", "fighting", "flying", "poison", "ground", "rock",
-    "bug", "ghost", "steel", "fire", "water", "grass", "electric",
-    "psychic", "ice", "dragon", "dark", "fairy", "stellar", "shadow", "unknown"
-  ];
+  const [tipos, setTipos] = useState([]);
+
+  useEffect(() => {
+    const obtenerTipos = async () => {
+      try {
+        const res = await fetch("https://digi-api.com/api/v1/type?limit=100");
+        const json = await res.json();
+        const lista = json.content.fields || []; // según el formato del JSON
+        setTipos(lista);
+      } catch (error) {
+        console.error("Error obteniendo tipos:", error);
+      }
+    };
+
+    obtenerTipos();
+  }, []);
 
   return (
     <div className="c-filtro">
-      {tipos.map((unTipo, index) => (
-        <button className='' key={index} onClick={() => onTipoChange(unTipo)}>
-          {unTipo}
+      <button className="c-filtro-btn" onClick={() => onTipoChange("All")}>
+        All
+      </button>
+      {tipos.map((tipo) => (
+        <button
+          className="c-filtro-btn"
+          key={tipo.id}
+          onClick={() => onTipoChange(tipo.id)}
+        >
+          {tipo.name}
         </button>
       ))}
     </div>

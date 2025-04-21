@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import Filtro from '../Filtros/Index';
-import { useNavigate } from "react-router-dom";
-import './Style.css'
+import { useNavigate } from 'react-router-dom';
+import './Style.css';
 
 function Listar() {
-
   const [data, setData] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [tipoSeleccionado, setTipoSeleccionado] = useState('All');
@@ -12,15 +11,19 @@ function Listar() {
 
   useEffect(() => {
     const obtenerDatos = async () => {
-      if (tipoSeleccionado === 'All') {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1025");
-        const json = await res.json();
-        setData(json.results);
-      } else {
-        const res = await fetch(`https://pokeapi.co/api/v2/type/${tipoSeleccionado}`);
-        const json = await res.json();
-        const listaFiltrada = json.pokemon.map(p => p.pokemon);
-        setData(listaFiltrada);
+      try {
+        if (tipoSeleccionado === 'All') {
+          const res = await fetch("https://digi-api.com/api/v1/digimon?limit=1460");
+          const json = await res.json();
+          setData(json.content);
+        } else {
+          const res = await fetch(`https://digi-api.com/api/v1/type/${tipoSeleccionado}`);
+          const json = await res.json();
+          const listaFiltrada = json.digimon.map(d => d.digimon); // Depende de cómo venga este endpoint
+          setData(listaFiltrada);
+        }
+      } catch (error) {
+        console.error("Error obteniendo datos:", error);
       }
     };
 
@@ -31,50 +34,54 @@ function Listar() {
     setTipoSeleccionado(tipo);
   };
 
-
+  // 🔍 Filtros
   let resultados = data;
 
   if (busqueda.length >= 3 && isNaN(busqueda)) {
-    resultados = data.filter(pokemon =>
-      pokemon.name.toLowerCase().includes(busqueda.toLowerCase())
+    resultados = data.filter(digimon =>
+      digimon.name.toLowerCase().includes(busqueda.toLowerCase())
     );
   }
 
   if (!isNaN(busqueda)) {
-    resultados = data.filter(pokemon =>
-      pokemon.url.includes('/' + busqueda)
+    resultados = data.filter(digimon =>
+      digimon.id.toString().includes(busqueda)
     );
   }
 
   return (
     <>
-
-<input
+      <input
         type="text"
-        placeholder="Buscar Pokémon"
+        placeholder="Buscar Digimon"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
         className="c-buscador"
       />
-    <Filtro onTipoChange={handleTipoChange} />
 
+      <Filtro onTipoChange={handleTipoChange} />
 
-    <section className='c-lista'>
-
-{resultados.map((pokemon, index) => (
-  <div className='c-lista-pokemon'
-  onClick={() => navigate(`/detalle/${pokemon.name}`)}
-  key={index}>
-    <p>{pokemon.url.split("/")[6]}</p>
-    <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.url.split("/")[6]}.png`} 
-          alt={`Pokémon ${pokemon.name}`} width='auto' height='60' loading='lazy'
-        />
-    <p>{pokemon.name}</p>
-  </div>
-))}
-</section> 
+      <section className='c-lista'>
+        {resultados.map((digimon, index) => (
+          <div
+            className='c-lista-digimon'
+            onClick={() => navigate(`/detalle/${digimon.id}`)}
+            key={index}
+          >
+            <p>ID: {digimon.id}</p>
+            <img
+              src={digimon.image || 'https://via.placeholder.com/60?text=No+Img'}
+              alt={`Digimon ${digimon.name}`}
+              width='auto'
+              height='60'
+              loading='lazy'
+            />
+            <p>{digimon.name}</p>
+          </div>
+        ))}
+      </section>
     </>
-  )
+  );
 }
 
-export default Listar
+export default Listar;

@@ -1,0 +1,26 @@
+.c-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .c-lista-digimon {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .c-lista-digimon:hover {
+    transform: scale(1.05);
+  }
+  
+  .c-buscador {
+    margin: 20px;
+    padding: 10px;
+    width: 80%;
+    max-width: 400px;
+  }
+      
