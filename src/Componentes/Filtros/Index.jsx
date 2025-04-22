@@ -7,10 +7,19 @@ function Filtro({ onTipoChange }) {
   useEffect(() => {
     const obtenerTipos = async () => {
       try {
-        const res = await fetch("https://digi-api.com/api/v1/type?limit=100");
-        const json = await res.json();
-        const lista = json.content.fields || []; // según el formato del JSON
-        setTipos(lista);
+        let todosLosTipos = [];
+        const totalPaginas = 30;
+
+        for (let pagina = 0; pagina < totalPaginas; pagina++) {
+          const res = await fetch(`https://digi-api.com/api/v1/type?page=${pagina}`);
+          const json = await res.json();
+
+          if (json.content && Array.isArray(json.content.fields)) {
+            todosLosTipos = todosLosTipos.concat(json.content.fields);
+          }
+        }
+
+        setTipos(todosLosTipos);
       } catch (error) {
         console.error("Error obteniendo tipos:", error);
       }
@@ -28,7 +37,7 @@ function Filtro({ onTipoChange }) {
         <button
           className="c-filtro-btn"
           key={tipo.id}
-          onClick={() => onTipoChange(tipo.id)}
+          onClick={() => onTipoChange(tipo.name)}
         >
           {tipo.name}
         </button>

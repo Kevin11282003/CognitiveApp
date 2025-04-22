@@ -24,3 +24,24 @@
     max-width: 400px;
   }
       
+
+  /* Contenedor principal de la página (esto asegura que el contenido no se solape con el menú) */
+.c-lista {
+  padding-bottom: 20px; /* Agregar un espacio extra para evitar que el menú cubra el contenido */
+}
+
+/* Botones de paginación */
+.pagination-buttons {
+  margin-top: 10px; /* Agregar un espacio entre los botones de paginación y los elementos de arriba */
+  margin-bottom: 10px; /* Asegura que haya un margen inferior */
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Espaciado entre los botones */
+}
+
+/* Asegura que la sección de la lista de digimon tenga un margen inferior adecuado */
+body {
+  margin-bottom: 60px; /* Agregar un margen inferior global */
+}
+
+
