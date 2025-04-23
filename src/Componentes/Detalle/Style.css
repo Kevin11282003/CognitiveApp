@@ -1,0 +1,45 @@
+.detalle-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .detalle-imagen {
+    max-height: 150px;
+    margin: 20px 0;
+  }
+  
+  .detalle-info {
+    list-style: none;
+    padding: 0;
+    line-height: 1.6;
+  }
+  
+  .detalle-habilidades ul {
+    list-style: disc;
+    padding-left: 20px;
+  }
+  
+  .detalle-evoluciones {
+    margin-top: 30px;
+  }
+  
+  .evoluciones-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .evolucion-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 6px;
+    transition: transform 0.2s;
+  }
+  
+  .evolucion-card:hover {
+    transform: scale(1.05);
+  }
+  

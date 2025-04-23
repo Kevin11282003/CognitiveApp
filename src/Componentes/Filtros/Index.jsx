@@ -4,11 +4,12 @@ import './Style.css';
 function Filtro({ onTipoChange }) {
   const [tipos, setTipos] = useState([]);
 
+  // Cargar los tipos desde la API externa
   useEffect(() => {
     const obtenerTipos = async () => {
       try {
         let todosLosTipos = [];
-        const totalPaginas = 30;
+        const totalPaginas = 30; // Ajusta según sea necesario para cargar más páginas si es necesario
 
         for (let pagina = 0; pagina < totalPaginas; pagina++) {
           const res = await fetch(`https://digi-api.com/api/v1/type?page=${pagina}`);
@@ -19,9 +20,10 @@ function Filtro({ onTipoChange }) {
           }
         }
 
+        // Guardar los tipos obtenidos
         setTipos(todosLosTipos);
       } catch (error) {
-        console.error("Error obteniendo tipos:", error);
+        console.error("Error obteniendo los tipos:", error);
       }
     };
 

@@ -4,21 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import './Style.css';
 
 function Listar() {
-  const [data, setData] = useState([]);
-  const [todos, setTodos] = useState([]); // Aquí almacenamos todos los Digimon cuando se precargan
+  const [data, setData] = useState([]);  // Holds Digimons for current page
+  const [todos, setTodos] = useState([]);  // Holds all Digimons for filtering
   const [busqueda, setBusqueda] = useState('');
   const [tipoSeleccionado, setTipoSeleccionado] = useState('All');
   const [paginaActual, setPaginaActual] = useState(0);
   const [cargando, setCargando] = useState(false);
   const navigate = useNavigate();
 
-  // 🚀 Cargar inicialmente solo 10 páginas (páginas 0 a 9)
+  // Load Digimons by page, based on the selected type
   useEffect(() => {
     const obtenerDigimonPorPagina = async () => {
       setCargando(true);
       try {
         let allDigimon = [];
-        const totalPages = 292;
+        const totalPages = 10;
         const startPage = paginaActual * 10;
         const endPage = startPage + 9;
 
@@ -26,6 +26,13 @@ function Listar() {
           const res = await fetch(`https://digi-api.com/api/v1/digimon?page=${page}`);
           const json = await res.json();
           allDigimon = allDigimon.concat(json.content);
+        }
+
+        // Apply filtering by selected type
+        if (tipoSeleccionado !== 'All') {
+          allDigimon = allDigimon.filter(digimon =>
+            digimon.types?.some(t => t.type === tipoSeleccionado)
+          );
         }
 
         setData(allDigimon);
@@ -37,9 +44,9 @@ function Listar() {
     };
 
     obtenerDigimonPorPagina();
-  }, [paginaActual, tipoSeleccionado]);
+  }, [paginaActual, tipoSeleccionado]);  // Re-run when page or type is changed
 
-  // ✅ Precargar todos los Digimon en segundo plano después de 2 segundos
+  // Preload all Digimons to get the unique types
   useEffect(() => {
     if (todos.length === 0 && !cargando) {
       const cargarTodos = async () => {
@@ -58,18 +65,21 @@ function Listar() {
 
       setTimeout(() => {
         cargarTodos();
-      }, 2000); // Espera 2 segundos antes de comenzar a precargar
+      }, 2000);
     }
-  }, []);
+  }, [todos.length, cargando]);
 
+  // Extract unique types from all Digimons
+  const tiposUnicos = [...new Set(todos.flatMap(d => d.types?.map(t => t.type)).filter(Boolean))];
+
+  // Update the selected type for filtering
   const handleTipoChange = (tipo) => {
     setTipoSeleccionado(tipo);
   };
 
-  // 🔍 Filtrar los resultados por tipo seleccionado
+  // Handle search input
   let resultados = busqueda.length >= 3 || !isNaN(busqueda) ? todos : data;
 
-  // Filtro por búsqueda
   if (busqueda.length >= 3 && isNaN(busqueda)) {
     resultados = todos.filter(d =>
       d.name.toLowerCase().includes(busqueda.toLowerCase())
@@ -79,13 +89,6 @@ function Listar() {
   if (!isNaN(busqueda)) {
     resultados = todos.filter(d =>
       d.id.toString().includes(busqueda)
-    );
-  }
-
-  // Filtro por tipo seleccionado
-  if (tipoSeleccionado !== 'All') {
-    resultados = resultados.filter(digimon =>
-      digimon.types?.some(t => t.type === tipoSeleccionado)
     );
   }
 
@@ -111,7 +114,7 @@ function Listar() {
         className="c-buscador"
       />
 
-      <Filtro onTipoChange={handleTipoChange} />
+      <Filtro tipos={tiposUnicos} onTipoChange={handleTipoChange} />
 
       <section className="c-lista">
         {resultados.map((digimon, index) => (
@@ -133,12 +136,14 @@ function Listar() {
         ))}
       </section>
 
+      <div className="c-paginacion">
+        <button onClick={handlePreviousPage}>Anterior</button>
+        <button onClick={handleNextPage}>Siguiente</button>
+      </div>
+
       {cargando && <p>Cargando...</p>}
     </>
   );
 }
 
 export default Listar;
-
-
-
