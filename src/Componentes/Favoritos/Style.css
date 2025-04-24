@@ -1,0 +1,30 @@
+.c-lista-digimon {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .favoritos {
+    text-align: center;
+  }
+  
+  .favoritos h2 {
+    margin-bottom: 20px;
+  }
+  

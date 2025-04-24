@@ -7,6 +7,8 @@ function Detalle() {
   const navigate = useNavigate();
   const [digimon, setDigimon] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [notificacion, setNotificacion] = useState(null);
 
   // Efecto para obtener la información del Digimon por su ID
   useEffect(() => {
@@ -15,6 +17,8 @@ function Detalle() {
         const res = await fetch(`https://digi-api.com/api/v1/digimon/${id}`);
         const json = await res.json();
         setDigimon(json);
+        const favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+        setIsFavorite(favoritos.includes(id));
       } catch (error) {
         console.error("Error cargando el Digimon:", error);
       } finally {
@@ -28,10 +32,46 @@ function Detalle() {
   if (cargando) return <p>Cargando detalles...</p>;
   if (!digimon) return <p>No se encontró el Digimon.</p>;
 
+  const handleAgregarFavorito = () => {
+    let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+    if (!favoritos.includes(id)) {
+      favoritos.push(id);
+      localStorage.setItem('favoritos', JSON.stringify(favoritos));
+      setIsFavorite(true);
+      setNotificacion('¡Digimon añadido a favoritos!');
+        setTimeout(() => setNotificacion(null), 2000);
+    }
+  };
+  const handleEliminarFavorito = () => {
+    let favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+    favoritos = favoritos.filter(favId => favId !== id);
+    localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    setIsFavorite(false);
+    setNotificacion('¡Digimon eliminado de favoritos!');
+    setTimeout(() => setNotificacion(null), 2000);
+  };
+
   return (
     <div className="detalle-container">
       {/* Botón para volver atrás */}
       <button onClick={() => navigate(-1)}>← Volver</button>
+                {/* Botón para añadir a favoritos */}
+                {!isFavorite && (
+            <button onClick={handleAgregarFavorito}>Añadir a favoritos</button>
+          )}
+          {isFavorite && <p>Este Digimon ya está en tus favoritos.</p>}
+
+          {/* Botón para eliminar de favoritos */}
+          {isFavorite && (
+            <button onClick={handleEliminarFavorito}>Eliminar de favoritos</button>
+          )}
+
+                      {/* Mostrar notificación */}
+                      {notificacion && (
+        <div style={{ background: '#4caf50', color: 'white', padding: '10px', marginTop: '20px' }}>
+          {notificacion}
+        </div>
+      )}
 
       <h2>{digimon.name}</h2>
 
@@ -93,6 +133,8 @@ function Detalle() {
           </div>
         </div>
       )}
+
+
     </div>
   );
 }

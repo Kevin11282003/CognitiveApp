@@ -1,47 +1,45 @@
 .c-lista {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .c-lista-digimon {
-    border: 1px solid #ccc;
-    padding: 10px;
-    width: 150px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  
-  .c-lista-digimon:hover {
-    transform: scale(1.05);
-  }
-  
-  .c-buscador {
-    margin: 20px;
-    padding: 10px;
-    width: 80%;
-    max-width: 400px;
-  }
-      
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
 
-  /* Contenedor principal de la página (esto asegura que el contenido no se solape con el menú) */
+.c-lista-digimon {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 150px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.c-lista-digimon:hover {
+  transform: scale(1.05);
+}
+
+.c-buscador {
+  margin: 20px;
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+}
+    
+
+/* Contenedor principal de la página (esto asegura que el contenido no se solape con el menú) */
 .c-lista {
-  padding-bottom: 20px; /* Agregar un espacio extra para evitar que el menú cubra el contenido */
+padding-bottom: 20px; /* Agregar un espacio extra para evitar que el menú cubra el contenido */
 }
 
 /* Botones de paginación */
 .pagination-buttons {
-  margin-top: 10px; /* Agregar un espacio entre los botones de paginación y los elementos de arriba */
-  margin-bottom: 10px; /* Asegura que haya un margen inferior */
-  display: flex;
-  justify-content: center;
-  gap: 10px; /* Espaciado entre los botones */
+margin-top: 10px; /* Agregar un espacio entre los botones de paginación y los elementos de arriba */
+margin-bottom: 10px; /* Asegura que haya un margen inferior */
+display: flex;
+justify-content: center;
+gap: 10px; /* Espaciado entre los botones */
 }
 
 /* Asegura que la sección de la lista de digimon tenga un margen inferior adecuado */
 body {
-  margin-bottom: 60px; /* Agregar un margen inferior global */
+margin-bottom: 60px; /* Agregar un margen inferior global */
 }
-
-
