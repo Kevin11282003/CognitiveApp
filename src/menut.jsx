@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Menu({ cambiarTema }) {
+function Menu() {
   return (
     <nav>
       <div className="menu">
@@ -23,19 +23,6 @@ function Menu({ cambiarTema }) {
             <Link to="/Usuario">Usuario</Link>
           </li>
         </ul>
-        {/* Selector de Tema */}
-        <div className="theme-selector">
-          <label htmlFor="theme">Seleccionar Tema:</label>
-          <select
-            id="theme"
-            onChange={(e) => cambiarTema(e.target.value)}
-            defaultValue="light"
-          >
-            <option value="light">Tema Claro</option>
-            <option value="dark">Tema Oscuro</option>
-            <option value="vintage">Tema Vintage</option>
-          </select>
-        </div>
       </div>
     </nav>
   );

@@ -1,33 +1,64 @@
-import { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './App.css';
-import Aleatorios from './Componentes/Aleatorios/Index';
-import Detalle from './Componentes/Detalle/Index';
-import Favoritos from './Componentes/Favoritos/Index';
-import Listar from './Componentes/Listar/Index';
-import Original from './Componentes/Original/Index';
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { supabase } from "./supabase";  // Aquí importas tu configuración de Supabase
+
+// Aquí tus componentes
+import Login from './Componentes/Login/Index';
 import Usuario from './Componentes/Usuario/Index';
 import Menu from './menut';
+import Listar from './Componentes/Listar/Index';
+import Aleatorios from './Componentes/Aleatorios/Index';
+import Favoritos from './Componentes/Favoritos/Index';
+import Detalle from './Componentes/Detalle/Index';
+import Registro from './Componentes/Registro/Index';
+import Administrador from './Componentes/Administrador/Index';
+import Original from './Componentes/Original/Index';
+import './App.css';
 
 function App() {
-  const [tema, setTema] = useState('light'); // Estado para el tema actual
+  const [usuario, setUsuario] = useState(null);
+  const [cargando, setCargando] = useState(true);  // Indicador de carga para saber si estamos verificando la sesión
 
-  // Función para cambiar el tema
-  const cambiarTema = (nuevoTema) => {
-    setTema(nuevoTema);
-    document.body.setAttribute('data-theme', nuevoTema); // Cambiar el tema en el body
-  };
+  // Hook para verificar la sesión al inicio
+  useEffect(() => {
+    async function verificarSesion() {
+      const { data: { session } } = await supabase.auth.getSession();  // Verifica si hay sesión activa
+
+      // Si hay sesión activa, asignamos el usuario, si no, lo dejamos como null
+      setUsuario(session?.user || null);
+
+      setCargando(false);  // Desactivamos el indicador de carga cuando la sesión ha sido verificada
+    }
+
+    verificarSesion();
+
+    // Escuchamos cambios en la sesión (si el usuario se loguea o cierra sesión)
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setUsuario(session?.user || null);
+    });
+  }, []);
+
+  // Si estamos verificando la sesión, mostramos un indicador de carga
+  if (cargando) return <p>Cargando...</p>;
 
   return (
     <Router>
-      <Menu cambiarTema={cambiarTema} />
+      <Menu />
+      {/* Verificamos si hay un usuario y, si no, lo redirigimos a login */}
       <Routes>
-        <Route path="/Listar" element={<Listar />} />
-        <Route path="/detalle/:id" element={<Detalle />} />
-        <Route path="/aleatorios" element={<Aleatorios />} />
-        <Route path="/Original" element={<Original />} />
-        <Route path="/favoritos" element={<Favoritos />} />
-        <Route path="/Usuario" element={<Usuario />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro/>} />
+        <Route path="/administrador" element={<Administrador/>} />
+
+
+        <Route path="/usuario" element={usuario ? <Usuario /> : <Navigate to="/login" />}/>
+        {/* Aquí otras rutas protegidas */}
+        <Route path="/" element={usuario ? <Menu /> : <Navigate to="/login" />} />
+        <Route path="/Listar" element={usuario ? <Listar /> : <Navigate to="/login" />} />
+        <Route path="/aleatorios" element={usuario ? <Aleatorios /> : <Navigate to="/login" />} />
+        <Route path="/favoritos" element={usuario ? <Favoritos /> : <Navigate to="/login" />} />
+        <Route path="/detalle/:id" element={usuario ? <Detalle /> : <Navigate to="/login" />} />
+        <Route path="/original" element={usuario ? <Original /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
