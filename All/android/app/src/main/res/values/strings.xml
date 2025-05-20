@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">APIdigimon</string>
+    <string name="title_activity_main">APIdigimon</string>
+    <string name="package_name">com.digimon.app</string>
+    <string name="custom_url_scheme">com.digimon.app</string>
+</resources>
