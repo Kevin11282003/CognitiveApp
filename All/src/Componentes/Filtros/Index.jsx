@@ -1,26 +1,23 @@
 import { useState, useEffect } from 'react';
-import './Style.css';
+import './Stylef.css';
 
 function Filtro({ onTipoChange }) {
   const [tipos, setTipos] = useState([]);
 
-  // Cargar los tipos desde la API externa
   useEffect(() => {
     const obtenerTipos = async () => {
       try {
         let todosLosTipos = [];
-        const totalPaginas = 30; // Ajusta según sea necesario para cargar más páginas si es necesario
+        const totalPaginas = 30;
 
         for (let pagina = 0; pagina < totalPaginas; pagina++) {
           const res = await fetch(`https://digi-api.com/api/v1/type?page=${pagina}`);
           const json = await res.json();
-
           if (json.content && Array.isArray(json.content.fields)) {
             todosLosTipos = todosLosTipos.concat(json.content.fields);
           }
         }
 
-        // Guardar los tipos obtenidos
         setTipos(todosLosTipos);
       } catch (error) {
         console.error("Error obteniendo los tipos:", error);
@@ -31,13 +28,13 @@ function Filtro({ onTipoChange }) {
   }, []);
 
   return (
-    <div className="c-filtro">
-      <button className="c-filtro-btn" onClick={() => onTipoChange("All")}>
+    <div id="filtro-componente">
+      <button className="filtro-componente-btn" onClick={() => onTipoChange("All")}>
         All
       </button>
       {tipos.map((tipo) => (
         <button
-          className="c-filtro-btn"
+          className="filtro-componente-btn"
           key={tipo.id}
           onClick={() => onTipoChange(tipo.name)}
         >

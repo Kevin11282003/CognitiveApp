@@ -1,0 +1,37 @@
+#filtro-componente {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 15px !important;
+  justify-content: center !important;
+  margin: 20px 0 !important;
+  background-color: #121212 !important;
+  padding: 10px !important;
+  border-radius: 8px !important;
+  max-width: 100%;
+  z-index: 10;
+}
+
+/* Botones */
+#filtro-componente .filtro-componente-btn {
+  padding: 10px 16px !important;
+  background-color: #2a2a2a !important;
+  color: #f0f0f0 !important;
+  border: 2px solid #3a3a3a !important;
+  border-radius: 6px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease, transform 0.2s ease !important;
+}
+
+#filtro-componente .filtro-componente-btn:hover {
+  background-color: #3d3d3d !important;
+  transform: scale(1.05) !important;
+}
+
+#filtro-componente .filtro-componente-btn:disabled {
+  background-color: #555 !important;
+  border-color: #666 !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+}

@@ -17,33 +17,4 @@ h2 {
   color: #ffffff;
 }
 
-/* Botón para obtener un Digimon aleatorio */
-button {
-  background: linear-gradient(135deg, #6200ea, #3700b3);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  width: 100%;  /* El botón ocupará todo el ancho del contenedor */
-  box-sizing: border-box;
-}
-
-/* Botón en estado hover */
-button:hover {
-  background: linear-gradient(135deg, #3700b3, #6200ea);
-}
-
-/* Botón deshabilitado */
-button:disabled {
-  background: #666666;
-  cursor: not-allowed;
-}
-
-/* Estilos mientras se está cargando */
-button:disabled {
-  background: #888888;  /* Color gris para cuando está cargando */
-}
 

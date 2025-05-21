@@ -12,7 +12,7 @@ function Listar() {
 
   useEffect(() => {
     const cargarTodos = async () => {
-      setCargando(true);  // Establece que está cargando
+      setCargando(true);
       try {
         let ids = [];
         // Obtener todos los Digimon solo con ID y nombre
@@ -36,7 +36,7 @@ function Listar() {
       } catch (e) {
         console.error("Error cargando Digimon:", e);
       } finally {
-        setCargando(false);  // Cuando termine de cargar, indica que ya no está cargando
+        setCargando(false);
       }
     };
 
@@ -92,34 +92,32 @@ function Listar() {
       </div>
 
       <section className="c-lista">
-        {cargando ? (
-          <p className="cargando">Cargando Digimon... Puede tardar un poco ⚙️</p>
-        ) : (
-          resultadosFiltrados.map((digimon, index) => (
-            <div
-              className="c-lista-digimon"
-              onClick={() => navigate(`/detalle/${digimon.id}`)}
-              key={index}
-            >
-              <p>ID: {digimon.id}</p>
-              <img
-                src={digimon.images?.[0]?.href || 'https://via.placeholder.com/60?text=No+Img'}
-                alt={`Digimon ${digimon.name}`}
-                height="60"
-                loading="lazy"
-              />
-              <p>{digimon.name}</p>
-              <p>
-                Tipo: {
-                  digimon.types && digimon.types.length > 0
-                    ? digimon.types.map(t => t.type).join(', ')
-                    : 'Desconocido'
-                }
-              </p>
-            </div>
-          ))
-        )}
+        {resultadosFiltrados.map((digimon, index) => (
+          <div
+            className="c-lista-digimon"
+            onClick={() => navigate(`/detalle/${digimon.id}`)}
+            key={index}
+          >
+            <p>ID: {digimon.id}</p>
+            <img
+              src={digimon.images?.[0]?.href || 'https://via.placeholder.com/60?text=No+Img'}
+              alt={`Digimon ${digimon.name}`}
+              height="60"
+              loading="lazy"
+            />
+            <p>{digimon.name}</p>
+            <p>
+              Tipo: {
+                digimon.types && digimon.types.length > 0
+                  ? digimon.types.map(t => t.type).join(', ')
+                  : 'Desconocido'
+              }
+            </p>
+          </div>
+        ))}
       </section>
+
+      {cargando && <p className="cargando">Cargando Digimon... Puede tardar un poco ⚙️</p>}
     </>
   );
 }
