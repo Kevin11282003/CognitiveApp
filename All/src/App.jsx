@@ -44,7 +44,7 @@ function App() {
   return (
     <Router>
       <Menu />
-      {/* Verificamos si hay un usuario y, si no, lo redirigimos a login */}
+      <main>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro/>} />
@@ -60,6 +60,7 @@ function App() {
         <Route path="/detalle/:id" element={usuario ? <Detalle /> : <Navigate to="/login" />} />
         <Route path="/original" element={usuario ? <Original /> : <Navigate to="/login" />} />
       </Routes>
+      </main>
     </Router>
   );
 }

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { supabase } from '../../supabase';
 import { useNavigate } from 'react-router-dom';
+import './Style.css';
+
 
 
 function Registro() {
@@ -56,7 +58,7 @@ function Registro() {
   };
 
   return (
-    <section>
+    <section id="registro-container">
       <h2>Registro</h2>
       <form onSubmit={handleRegistro}>
         <input
@@ -101,7 +103,7 @@ function Registro() {
         <button type="submit">Registrarse</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <h2>Ya tengo cuenta y quiero loguearme</h2>
+      <h4>Ya tengo cuenta y quiero loguearme</h4>
       <button onClick={() => navigate(`/login`)}>Login</button>
     </section>
   );

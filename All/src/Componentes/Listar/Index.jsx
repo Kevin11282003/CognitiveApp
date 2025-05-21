@@ -12,10 +12,9 @@ function Listar() {
 
   useEffect(() => {
     const cargarTodos = async () => {
-      setCargando(true);
+      setCargando(true);  // Establece que está cargando
       try {
         let ids = [];
-
         // Obtener todos los Digimon solo con ID y nombre
         for (let page = 0; page < 292; page++) {
           const res = await fetch(`https://digi-api.com/api/v1/digimon?page=${page}`);
@@ -37,7 +36,7 @@ function Listar() {
       } catch (e) {
         console.error("Error cargando Digimon:", e);
       } finally {
-        setCargando(false);
+        setCargando(false);  // Cuando termine de cargar, indica que ya no está cargando
       }
     };
 
@@ -88,35 +87,39 @@ function Listar() {
         className="c-buscador"
       />
 
-      <Filtro tipos={tiposUnicos} onTipoChange={handleTipoChange} />
+      <div className="c-filtro">
+        <Filtro tipos={tiposUnicos} onTipoChange={handleTipoChange} />
+      </div>
 
       <section className="c-lista">
-        {resultadosFiltrados.map((digimon, index) => (
-          <div
-            className="c-lista-digimon"
-            onClick={() => navigate(`/detalle/${digimon.id}`)}
-            key={index}
-          >
-            <p>ID: {digimon.id}</p>
-            <img
-              src={digimon.images?.[0]?.href || 'https://via.placeholder.com/60?text=No+Img'}
-              alt={`Digimon ${digimon.name}`}
-              height="60"
-              loading="lazy" // Imágenes que se cargan solo cuando se ven
-            />
-            <p>{digimon.name}</p>
-            <p>
-              Tipo: {
-                digimon.types && digimon.types.length > 0
-                  ? digimon.types.map(t => t.type).join(', ')
-                  : 'Desconocido'
-              }
-            </p>
-          </div>
-        ))}
+        {cargando ? (
+          <p className="cargando">Cargando Digimon... Puede tardar un poco ⚙️</p>
+        ) : (
+          resultadosFiltrados.map((digimon, index) => (
+            <div
+              className="c-lista-digimon"
+              onClick={() => navigate(`/detalle/${digimon.id}`)}
+              key={index}
+            >
+              <p>ID: {digimon.id}</p>
+              <img
+                src={digimon.images?.[0]?.href || 'https://via.placeholder.com/60?text=No+Img'}
+                alt={`Digimon ${digimon.name}`}
+                height="60"
+                loading="lazy"
+              />
+              <p>{digimon.name}</p>
+              <p>
+                Tipo: {
+                  digimon.types && digimon.types.length > 0
+                    ? digimon.types.map(t => t.type).join(', ')
+                    : 'Desconocido'
+                }
+              </p>
+            </div>
+          ))
+        )}
       </section>
-
-      {cargando && <p>Cargando Digimon... Puede tardar un poco ⚙️</p>}
     </>
   );
 }

@@ -1,0 +1,76 @@
+/* Estilo para la sección de registro, similar a #divisaun */
+#registro-container {
+  background-color: #1e1e1e;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  width: 320px;
+  text-align: center;
+  margin: 40px auto;
+}
+
+#registro-container h2 {
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+#registro-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+#registro-container input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2a2a2a;
+  color: #ffffff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+#registro-container input:focus {
+  outline: none;
+  background-color: #333333;
+  box-shadow: 0 0 5px #2196f3; /* Azul */
+}
+
+#registro-container button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #0d47a1, #1976d2); /* Azul oscuro a azul medio */
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#registro-container button:hover {
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+}
+
+#registro-container p {
+  color: #f44336;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+#registro-container h2:last-of-type {
+  margin-top: 30px;
+  font-size: 16px;
+  color: #90caf9;
+}
+
+#registro-container button:nth-of-type(2) {
+  background: transparent;
+  color: #90caf9;
+  border: 1px solid #90caf9;
+  margin-top: 10px;
+}
+
+#registro-container button:nth-of-type(2):hover {
+  background-color: #2a2a2a;
+}
+

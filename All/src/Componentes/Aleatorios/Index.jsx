@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import './Style.css';
 
 function Aleatorios() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Aleatorios() {
   };
 
   return (
-    <div>
+    <div id='ivi'>
       <h2>Digimon Aleatorio</h2>
       <button onClick={obtenerAleatorio} disabled={cargando}>
         {cargando ? 'Cargando...' : 'Ver Digimon Aleatorio'}

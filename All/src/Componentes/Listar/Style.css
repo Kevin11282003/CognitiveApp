@@ -1,45 +1,86 @@
-.c-lista {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+/* Estilo global para el tema oscuro */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;  /* Evita el desplazamiento horizontal innecesario */
 }
 
-.c-lista-digimon {
-  border: 1px solid #ccc;
+/* Filtro de tipos */
+.c-filtro {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Buscador */
+.c-buscador {
+  width: 100%;
+  max-width: 400px;
   padding: 10px;
-  width: 150px;
+  margin: 20px auto;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.c-buscador::placeholder {
+  color: #888;
+}
+
+/* Sección de lista de Digimons */
+.c-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 20vh; /* Esto asegura que la lista ocupe una porción adecuada de la pantalla */
+}
+
+/* Cargando mensaje */
+.cargando {
+  text-align: center;
+  color: #ddd;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* Elementos de la lista de Digimons */
+.c-lista-digimon {
+  background-color: #2a2a2a;
+  padding: 15px;
+  border-radius: 8px;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .c-lista-digimon:hover {
+  background-color: #444;
   transform: scale(1.05);
 }
 
-.c-buscador {
-  margin: 20px;
-  padding: 10px;
-  width: 80%;
-  max-width: 400px;
-}
-    
-
-/* Contenedor principal de la página (esto asegura que el contenido no se solape con el menú) */
-.c-lista {
-padding-bottom: 20px; /* Agregar un espacio extra para evitar que el menú cubra el contenido */
+.c-lista-digimon img {
+  width: 100%;
+  max-width: 60px;
+  height: auto;
+  margin-bottom: 10px;
 }
 
-/* Botones de paginación */
-.pagination-buttons {
-margin-top: 10px; /* Agregar un espacio entre los botones de paginación y los elementos de arriba */
-margin-bottom: 10px; /* Asegura que haya un margen inferior */
-display: flex;
-justify-content: center;
-gap: 10px; /* Espaciado entre los botones */
+.c-lista-digimon p {
+  margin: 5px 0;
+  font-size: 14px;
 }
 
-/* Asegura que la sección de la lista de digimon tenga un margen inferior adecuado */
-body {
-margin-bottom: 60px; /* Agregar un margen inferior global */
+.c-lista-digimon p:first-of-type {
+  font-weight: bold;
 }

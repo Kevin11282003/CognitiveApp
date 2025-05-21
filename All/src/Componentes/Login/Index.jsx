@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../supabase'
 import { useNavigate } from "react-router-dom";
+import './Style.css';
 
 
 function Login() {
@@ -22,7 +23,8 @@ function Login() {
   }
 
   return (
-    <div>
+
+    <div id='divisaun'>
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <input
@@ -39,9 +41,10 @@ function Login() {
           />
           <button type="submit">Iniciar sesión</button>
         </form>
-        <h2>No tiene cuenta</h2>
+        <h4>¿No tiene cuenta?</h4>
         <button onClick={() => navigate(`/registro`)}>Registrese</button>
       </div>
+  
   )
 }
 

@@ -1,128 +1,40 @@
-/* Tema claro */
-:root {
-    --fondo: white;
-    --texto: black;
-    --fondoBoton: #4caf50;
-    --colorBoton: white;
-    --fondoNav: #f1f1f1;
-  }
-  
-  /* Tema oscuro */
-  [data-theme="dark"] {
-    --fondo: #121212;
-    --texto: #e0e0e0;
-    --fondoBoton: #333;
-    --colorBoton: #e0e0e0;
-    --fondoNav: #333;
-  }
-  
-  /* Tema vintage */
-  [data-theme="vintage"] {
-    --fondo: #f4f0e1;
-    --texto: #5a3e36;
-    --fondoBoton: #d28c6c;
-    --colorBoton: #fff;
-    --fondoNav: #bc8a5e;
-  }
-  
-  /* Aplicar los estilos usando las variables */
-  body {
-    background-color: var(--fondo);
-    color: var(--texto);
-    font-family: Arial, sans-serif;
-  }
-  
-  button {
-    background-color: var(--fondoBoton);
-    color: var(--colorBoton);
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #333;
-  }
-  
+/* Menú inferior fijo */
+.menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #1f1f1f;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid #333;
+  z-index: 1000;
+}
 
-  nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #f5f5f5;
-    padding: 5px 0; /* Reducir el padding para que no sea tan alto */
-    z-index: 1000;
-    display: flex;
-    justify-content: center; /* Centra las opciones */
-    align-items: center; /* Centra las opciones verticalmente */
-    height: auto; /* Ajusta la altura al contenido */
-  }
+/* Lista del menú horizontal */
+.menu-list {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+}
 
-  main {
-    flex-grow: 1;
-    padding-bottom: 70px; /* Aseguramos que el contenido no quede cubierto por el menú */
-  }
-  
-  /* Menú fijo en la parte inferior */
-  nav {
-    background-color: var(--fondoNav);
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1000;
-  }
-  
+/* Enlaces */
+.menu-list li a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
 
-  
-  .menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .menu-list {
-    display: flex;
-    gap: 1rem;
-    list-style-type: none;
-    margin: 0;
-  }
-  
-  .menu-list li {
-    margin: 0 10px; /* Reduce el espacio entre elementos */
-    text-align: center;
-  }
-  
-  /* Estilo para los enlaces de cada opción del menú */
-  .menu-list li a {
-    text-decoration: none;
-    font-size: 16px; /* Fuente ligeramente más pequeña */
-    display: block;
-    padding: 5px 10px; /* Espacio alrededor del texto para hacerlo más compacto */
-  }
-  
-  /* Efecto al pasar el ratón por encima */
-  .menu-list li a:hover {
-    color: #007BFF;
-  }
-  
-  
-  /* Estilo para el selector de tema */
-  .theme-selector {
-    margin-top: 1px; /* Menos espacio en la parte superior */
-    margin-left: 10px;
-    padding: 1px;
-    width: 100%; /* Asegura que el selector ocupe todo el ancho disponible */
-    max-width: 200px; /* Limita el tamaño del selector */
-    box-sizing: border-box;
-  }
-  
-  .theme-selector select {
-    width: 100%; /* Asegura que el selector ocupe todo el ancho disponible */
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-  }
+.menu-list li a:hover {
+  background-color: #333;
+  color: #bb86fc;
+}
+
+main {
+  padding-bottom: 40px; /* evita que el menú tape contenido */
+}
