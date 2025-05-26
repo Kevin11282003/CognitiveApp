@@ -11,7 +11,6 @@ import Aleatorios from './Componentes/Aleatorios/Index';
 import Favoritos from './Componentes/Favoritos/Index';
 import Detalle from './Componentes/Detalle/Index';
 import Registro from './Componentes/Registro/Index';
-import Administrador from './Componentes/Administrador/Index';
 import Original from './Componentes/Original/Index';
 import './App.css';
 
@@ -48,7 +47,6 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro/>} />
-        <Route path="/administrador" element={<Administrador/>} />
 
 
         <Route path="/usuario" element={usuario ? <Usuario /> : <Navigate to="/login" />}/>
@@ -57,8 +55,8 @@ function App() {
         <Route path="/Listar" element={usuario ? <Listar /> : <Navigate to="/login" />} />
         <Route path="/aleatorios" element={usuario ? <Aleatorios /> : <Navigate to="/login" />} />
         <Route path="/favoritos" element={usuario ? <Favoritos /> : <Navigate to="/login" />} />
+        <Route path="/Original" element={usuario ? <Original /> : <Navigate to="/login" />} />
         <Route path="/detalle/:id" element={usuario ? <Detalle /> : <Navigate to="/login" />} />
-        <Route path="/original" element={usuario ? <Original /> : <Navigate to="/login" />} />
       </Routes>
       </main>
     </Router>

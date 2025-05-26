@@ -23,7 +23,7 @@ function Login() {
   }
 
   return (
-
+    <center>
     <div id='divisaun'>
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
@@ -44,7 +44,7 @@ function Login() {
         <h4>¿No tiene cuenta?</h4>
         <button onClick={() => navigate(`/registro`)}>Registrese</button>
       </div>
-  
+    </center>
   )
 }
 

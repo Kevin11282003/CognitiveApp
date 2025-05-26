@@ -1,0 +1,106 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #121212;
+  color: #ffcc00;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.difficulty-container {
+  margin-bottom: 20px;
+}
+
+.difficulty-text {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.difficulty-button {
+  background-color: #333;
+  color: #ffcc00;
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.difficulty-button.active {
+  background-color: #ffcc00;
+  color: #121212;
+}
+
+.stats-container p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  gap: 10px;
+  justify-content: center;
+}
+
+.card {
+  width: 80px;
+  height: 100px;
+  border-radius: 8px;
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card.flipped {
+  background-color: #2d2d2d;
+  border-color: #777;
+  cursor: default;
+}
+
+.card-image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.card-text {
+  margin-top: 5px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #ffcc00;
+}
+
+.reset-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.victory-message {
+  margin-top: 20px;
+  color: #00e676;
+}
+
+.loading {
+  color: #00aaff;
+  font-weight: bold;
+}
