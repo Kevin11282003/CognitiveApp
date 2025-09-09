@@ -4,10 +4,11 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #1f1f1f;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-  border-top: 1px solid #333;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #e0e0e0;
   z-index: 1000;
+  font-family: "Segoe UI", sans-serif;
 }
 
 /* Lista del menú horizontal */
@@ -22,19 +23,21 @@
 
 /* Enlaces */
 .menu-list li a {
-  color: #e0e0e0;
+  color: #1976d2;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
   padding: 8px 12px;
-  border-radius: 5px;
+  border-radius: 8px;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .menu-list li a:hover {
-  background-color: #333;
-  color: #bb86fc;
+  background-color: #f0f7ff;
+  color: #0d47a1;
 }
 
+/* Ajuste para que el contenido no quede oculto tras el menú */
 main {
-  padding-bottom: 40px; /* evita que el menú tape contenido */
+  padding-bottom: 60px; /* altura extra por el menú */
 }

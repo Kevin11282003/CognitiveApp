@@ -25,6 +25,7 @@ function Login() {
   return (
     <center>
     <div id='divisaun'>
+        <h1>CognitiveApp</h1>
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
           <input

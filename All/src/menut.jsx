@@ -10,16 +10,16 @@ function Menu() {
         {/* Enlaces del menú */}
         <ul className="menu-list">
           <li>
-            <Link to="/Listar">Lista</Link>
+            <Link to="/Inicio">Inicio</Link>
           </li>
           <li>
-            <Link to="/aleatorios">Aleatorio</Link>
+            <Link to="/Ejercicios">Ejercicios</Link>
           </li>
           <li>
-            <Link to="/favoritos">Favoritos</Link>
+            <Link to="/Progreso">Progreso</Link>
           </li>
           <li>
-            <Link to="/Original">Original</Link>
+            <Link to="/Accesibilidad">Accesibilidad</Link>
           </li>
           <li>
             <Link to="/Usuario">Usuario</Link>
