@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Progreso.css";
+import "../../App.css";
 
 export default function Progreso() {
   const navigate = useNavigate();

@@ -41,3 +41,203 @@
 main {
   padding-bottom: 60px; /* altura extra por el menú */
 }
+
+
+.acces-container { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); font-family: "Segoe UI", sans-serif; } 
+.acces-actions { margin-bottom: 1rem; } 
+.acces-actions button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; } 
+.acces-actions button:hover { background: #0d47a1; } 
+.acces-titulo { font-size: 1.8rem; margin-bottom: 1rem; } 
+.acces-grid { display: grid; gap: 1.5rem; } 
+.acces-card { background: #f9f9f9; padding: 1.2rem; border-radius: 12px; } 
+.acces-card strong { display: block; margin-bottom: 0.5rem; } 
+.controls { display: flex; gap: 10px; margin-top: 1rem; } 
+.controls button, .acces-card button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; } 
+.controls button:hover, .acces-card button:hover { background: #0d47a1; } 
+
+/* Modo alto contraste */ 
+.alto-contraste { background: #111 !important; color: #fff !important; } 
+.alto-contraste .acces-card { background: #222; color: #f9f9f9; } 
+
+.ejercicios-container { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); font-family: "Segoe UI", sans-serif; } 
+.ejercicios-actions { margin-bottom: 1rem; } 
+.ejercicios-actions button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; } 
+.ejercicios-actions button:hover { background: #0d47a1; } 
+.ejercicios-titulo { font-size: 1.8rem; margin-bottom: 0.5rem; color: #222; } 
+.ejercicios-subtitulo { font-size: 1rem; color: #555; margin-bottom: 2rem; } 
+.ejercicios-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; } 
+.ejercicios-card { background: #f9f9f9; border-radius: 12px; padding: 1.2rem; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; } 
+.ejercicios-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); } 
+.ejercicios-card .ico { font-size: 2rem; margin-bottom: 0.5rem; } 
+.ejercicios-card h3 { margin-bottom: 0.5rem; } 
+.ejercicios-card button { margin-top: 1rem; padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; } 
+.ejercicios-card button:hover { background: #0d47a1; } 
+
+.inicio-container { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); font-family: "Segoe UI", sans-serif; } 
+.inicio-actions { display: flex; gap: 10px; margin-bottom: 1rem; } 
+.inicio-actions button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; transition: 0.3s; } 
+.inicio-actions button:hover { background: #0d47a1; } 
+.inicio-notificacion { background: #4caf50; color: white; padding: 10px; margin: 1rem 0; border-radius: 8px; text-align: center; } 
+.inicio-titulo { font-size: 1.8rem; margin-bottom: 0.5rem; color: #222; } 
+.inicio-subtitulo { font-size: 1rem; color: #555; margin-bottom: 2rem; } 
+.inicio-opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; } 
+.inicio-card { background: #f9f9f9; border-radius: 12px; padding: 1.2rem; text-align: center; transition: transform 0.3s ease, box-shadow 0.3s ease; } 
+.inicio-card:hover { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); } 
+.inicio-card .ico { font-size: 2rem; display: block; margin-bottom: 0.5rem; } 
+.inicio-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #333; } 
+.inicio-card p { font-size: 0.95rem; color: #666; margin-bottom: 1rem; } 
+.inicio-card button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; transition: background 0.3s; } 
+.inicio-card button:hover { background: #0d47a1; } 
+
+/* Estilo moderno y consistente con la CognitiveApp */ 
+#divisaun { background-color: #ffffff; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); width: 320px; margin: auto; text-align: center; font-family: "Segoe UI", sans-serif; } 
+#divisaun h4 { margin-bottom: 1.5rem; color: #1976d2; font-size: 1.4rem; font-weight: 600; } 
+#divisaun form { display: flex; flex-direction: column; gap: 1rem; } 
+#divisaun input { padding: 12px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; color: #333; font-size: 1rem; transition: all 0.3s ease; } 
+#divisaun input:focus { outline: none; background-color: #fff; border-color: #1976d2; box-shadow: 0 0 6px rgba(25, 118, 210, 0.4); } 
+#divisaun button { padding: 12px; border: none; border-radius: 10px; background: #1976d2; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; } 
+#divisaun button:hover { background: #0d47a1; transform: translateY(-2px); } 
+
+.progreso-container { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); font-family: "Segoe UI", sans-serif; } 
+.progreso-actions { margin-bottom: 1rem; } 
+.progreso-actions button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; } 
+.progreso-actions button:hover { background: #0d47a1; } 
+.progreso-titulo { font-size: 1.8rem; margin-bottom: 0.5rem; color: #222; } 
+.progreso-subtitulo { font-size: 1rem; color: #555; margin-bottom: 2rem; } 
+.progreso-charts { display: grid; gap: 1.5rem; } 
+.progreso-chart { background: #f9f9f9; padding: 1.2rem; border-radius: 12px; } 
+.bar-wrap { display: flex; gap: 6px; align-items: flex-end; height: 160px; margin: 1rem 0; } 
+.bar { flex: 1; background: linear-gradient(180deg, #3b82f6, #2563eb); border-radius: 6px 6px 0 0; } 
+.legend { font-size: 0.9rem; color: #666; } 
+
+/* Estilo moderno y consistente con CognitiveApp */ 
+#registro-container { background-color: #ffffff; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); width: 340px; text-align: center; margin: 3rem auto; font-family: "Segoe UI", sans-serif; } 
+#registro-container h2 { margin-bottom: 1.5rem; color: #1976d2; font-size: 1.6rem; font-weight: 600; } 
+#registro-container form { display: flex; flex-direction: column; gap: 1rem; } 
+#registro-container input { padding: 12px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; color: #333; font-size: 1rem; transition: all 0.3s ease; } 
+#registro-container input:focus { outline: none; background-color: #fff; border-color: #1976d2; box-shadow: 0 0 6px rgba(25, 118, 210, 0.4); } 
+#registro-container button { padding: 12px; border: none; border-radius: 10px; background: #1976d2; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; } 
+#registro-container button:hover { background: #0d47a1; transform: translateY(-2px); } 
+#registro-container p { color: #d32f2f; font-size: 0.9rem; margin-top: 0.5rem; } 
+/* Texto secundario */ 
+#registro-container h2:last-of-type { margin-top: 2rem; font-size: 1rem; color: #555; font-weight: 500; } 
+/* Botón alternativo (ej: iniciar sesión en vez de registrarse) */ 
+#registro-container button:nth-of-type(2) { background: transparent; color: #1976d2; border: 1px solid #1976d2; margin-top: 0.75rem; } 
+#registro-container button:nth-of-type(2):hover { background-color: #f0f7ff; } 
+
+#divsu { font-family: 'Segoe UI', sans-serif; padding: 30px; background-color: #f9f9f9; color: #333; max-width: 1000px; margin: 40px auto; border-radius: 12px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); } 
+.perfil-section, .imagenes-section, .logout-section { background-color: #ffffff; padding: 20px; margin-bottom: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); } 
+.perfil-section h2, .imagenes-section h3, .logout-section h2 { margin-bottom: 15px; color: #1976d2; font-weight: 600; } 
+.form-group label { display: block; margin-bottom: 10px; font-weight: 500; color: #555; } 
+.form-group input { width: 100%; padding: 10px; background-color: #fafafa; border: 1px solid #ccc; border-radius: 6px; color: #333; font-size: 15px; margin-top: 5px; box-sizing: border-box; transition: border-color 0.2s, box-shadow 0.2s; } 
+.form-group input:focus { outline: none; border-color: #1976d2; box-shadow: 0 0 4px rgba(25, 118, 210, 0.4); } 
+.agregar-imagen { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; } 
+.agregar-imagen input { flex: 1; } 
+button { background-color: #1976d2; border: none; padding: 10px 20px; color: white; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background-color 0.2s; } 
+button:disabled { background-color: #bdbdbd; cursor: not-allowed; } 
+button:hover:not(:disabled) { background-color: #1565c0; } 
+.lista-imagenes { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px; } 
+.lista-imagenes li { background-color: #f0f4f8; padding: 10px; border-radius: 8px; width: 160px; text-align: center; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08); } 
+.lista-imagenes img { max-width: 100%; border-radius: 6px; }
+
+
+/* ========== Alto contraste — reglas globales para todos los contenedores ========== */
+
+/* Contenedores principales */
+.alto-contraste .ejercicios-container,
+.alto-contraste .inicio-container,
+.alto-contraste .acces-container,
+.alto-contraste .progreso-container,
+.alto-contraste #divisaun,
+.alto-contraste #registro-container,
+.alto-contraste #divsu {
+  background: #111 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  border-color: #333 !important;
+}
+
+/* Cards y bloques internos */
+.alto-contraste .ejercicios-card,
+.alto-contraste .inicio-card,
+.alto-contraste .acces-card,
+.alto-contraste .progreso-chart,
+.alto-contraste .card {
+  background: #222 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45) !important;
+  border: 1px solid #2b2b2b !important;
+}
+
+/* Titulares, textos y labels */
+.alto-contraste h1,
+.alto-contraste h2,
+.alto-contraste h3,
+.alto-contraste p,
+.alto-contraste label,
+.alto-contraste .legend,
+.alto-contraste .inicio-subtitulo,
+.alto-contraste .ejercicios-subtitulo {
+  color: #fff !important;
+}
+
+/* Íconos y pequeños textos */
+.alto-contraste .ico,
+.alto-contraste .acces-card strong,
+.alto-contraste .lista-imagenes li {
+  color: #fff !important;
+}
+
+/* Inputs y formularios */
+.alto-contraste input,
+.alto-contraste textarea,
+.alto-contraste select {
+  background: #151515 !important;
+  color: #fff !important;
+  border-color: #333 !important;
+  box-shadow: none !important;
+}
+
+/* Botones: conservar color de acción pero asegurando contraste */
+.alto-contraste button {
+  background: #1976d2 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 6px rgba(25,118,210,0.2) !important;
+}
+
+/* Menú inferior y enlaces */
+.alto-contraste .menu {
+  background: #000 !important;
+  box-shadow: none !important;
+  border-top-color: #333 !important;
+}
+
+.alto-contraste .menu-list li a {
+  color: #90caf9 !important;
+}
+
+.alto-contraste .menu-list li a:hover {
+  background-color: #222 !important;
+  color: #fff !important;
+}
+
+/* Ajustes para listas/imágenes */
+.alto-contraste .lista-imagenes li {
+  background-color: #111 !important;
+  color: #fff !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.45) !important;
+}
+
+/* Si alguna regla aún queda sobreescrita por estilos muy específicos, aplica !important adicionalmente */
+
+
+/* Secciones de perfil e imágenes en modo alto contraste */
+.alto-contraste .perfil-section,
+.alto-contraste .imagenes-section,
+.alto-contraste .logout-section {
+  background: #222 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid #2b2b2b !important;
+}
+

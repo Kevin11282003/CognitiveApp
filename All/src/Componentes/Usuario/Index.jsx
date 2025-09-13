@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
-import './Style.css';
+import "../../App.css";
 export default function Usuario() {
   const [usuario, setUsuario] = useState(null);
   const [form, setForm] = useState({

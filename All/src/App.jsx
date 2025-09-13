@@ -11,6 +11,7 @@ import Ejercicios from './Componentes/Ejercicios/Index';
 import Progreso from './Componentes/Progreso/Index';
 import Registro from './Componentes/Registro/Index';
 import Accesibilidad from './Componentes/Accesibilidad/Index';
+import Memoria from './Componentes/Memoria/Index';
 import './App.css';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
   <Route path="/Inicio" element={usuario ? <Inicio /> : <Navigate to="/login" />} />
   <Route path="/Ejercicios" element={usuario ? <Ejercicios /> : <Navigate to="/login" />} />
   <Route path="/Progreso" element={usuario ? <Progreso /> : <Navigate to="/login" />} />
+  <Route path="/Memoria" element={usuario ? <Memoria /> : <Navigate to="/login" />} />
   <Route path="/Accesibilidad" element={usuario ? <Accesibilidad /> : <Navigate to="/login" />} />
 </Routes>
 

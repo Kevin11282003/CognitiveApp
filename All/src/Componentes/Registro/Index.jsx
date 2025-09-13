@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../../supabase';
 import { useNavigate } from 'react-router-dom';
-import './Style.css';
+import "../../App.css";
 
 
 

@@ -1,11 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Accesibilidad.css";
+import "../../App.css";
 
 export default function Accesibilidad() {
   const navigate = useNavigate();
-  const [fs, setFs] = useState(18);
-  const [contraste, setContraste] = useState(false);
+
+  // Cargar valores iniciales desde localStorage o valores por defecto
+  const [fs, setFs] = useState(() => {
+    return parseInt(localStorage.getItem("fontSize")) || 18;
+  });
+
+  const [contraste, setContraste] = useState(() => {
+    return localStorage.getItem("contraste") === "true" || false;
+  });
+
+  // Guardar en localStorage cada vez que cambie el tamaño de letra
+  useEffect(() => {
+    localStorage.setItem("fontSize", fs);
+  }, [fs]);
+
+  // Guardar en localStorage cada vez que cambie el contraste
+  useEffect(() => {
+    localStorage.setItem("contraste", contraste);
+  }, [contraste]);
+
+  // Aplicar estilos globales al body y otros contenedores
+  useEffect(() => {
+    document.body.style.fontSize = `${fs}px`;
+
+    if (contraste) {
+      document.body.classList.add("alto-contraste");
+    } else {
+      document.body.classList.remove("alto-contraste");
+    }
+  }, [fs, contraste]);
 
   return (
     <div
@@ -40,7 +68,14 @@ export default function Accesibilidad() {
         <div className="acces-card">
           <strong>Preferencias</strong>
           <p>Guardamos tus preferencias de accesibilidad en este navegador.</p>
-          <button onClick={() => { setFs(18); setContraste(false); }}>
+          <button
+            onClick={() => {
+              setFs(18);
+              setContraste(false);
+              localStorage.removeItem("fontSize");
+              localStorage.removeItem("contraste");
+            }}
+          >
             Restablecer
           </button>
         </div>

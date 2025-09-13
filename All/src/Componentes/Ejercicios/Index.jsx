@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Ejercicios.css";
+import "../../App.css";
 
 export default function Ejercicios() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function Ejercicios() {
             <span className="ico">{cat.icono}</span>
             <h3>{cat.titulo}</h3>
             <p>{cat.desc}</p>
-            <button>Iniciar →</button>
+            <button onClick={() => navigate("/Memoria")}>Iniciar →</button>
           </div>
         ))}
       </div>
