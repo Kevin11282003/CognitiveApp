@@ -29,7 +29,7 @@ export default function Ejercicios() {
             <span className="ico">{cat.icono}</span>
             <h3>{cat.titulo}</h3>
             <p>{cat.desc}</p>
-            <button onClick={() => navigate("/Memoria")}>Iniciar →</button>
+            <button onClick={() => navigate("/MenuMemoria")}>Iniciar →</button>
           </div>
         ))}
       </div>
