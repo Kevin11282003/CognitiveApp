@@ -1,197 +1,243 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react"; 
+import { useNavigate } from "react-router-dom"; 
+import "../../App.css"; 
 
-function EjercicioPalabrasEncadenadas() {
-  const [palabras, setPalabras] = useState([]);
-  const [entrada, setEntrada] = useState("");
-  const [mensaje, setMensaje] = useState(null);
-  const [tiempo, setTiempo] = useState(10); // tiempo por turno
-  const [perdio, setPerdio] = useState(false);
-  const [puntaje, setPuntaje] = useState(0);
+function EjercicioSecuencias() { 
+  const [secuencia, setSecuencia] = useState([]); 
+  const [respuesta, setRespuesta] = useState([]); 
+  const [nivel, setNivel] = useState(3); 
+  const [mensaje, setMensaje] = useState(null); 
+  const [mostrarSecuencia, setMostrarSecuencia] = useState(true); 
+  const [aciertosSeguidos, setAciertosSeguidos] = useState(0); 
+  const [error, setError] = useState(false); 
+  const [mostrarPuntaje, setMostrarPuntaje] = useState(false); 
+  const [rondasCorrectas, setRondasCorrectas] = useState(0); 
+  const [tiempoTotal, setTiempoTotal] = useState(0); 
+  const [tiempoInicio, setTiempoInicio] = useState(null); 
+  const [puntaje, setPuntaje] = useState(0); 
+  const [irMenu, setIrMenu] = useState(false); 
+  const [showScoreMessage, setShowScoreMessage] = useState(false); 
+  const [lastScore, setLastScore] = useState(0); 
 
-  const navigate = useNavigate();
-  const timerRef = useRef(null);
+  const inputsRef = useRef([]); 
+  const navigate = useNavigate(); 
 
-  // 👉 Función para quitar tildes y pasar a minúscula
-  const normalizar = (str) =>
-    str
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
+  const audioExito = new Audio("/sounds/exito.mp3"); 
+  const audioError = new Audio("/sounds/error.mp3"); 
 
-  // 👉 Obtener palabra aleatoria de la RAE
-  const fetchPalabraInicial = async () => {
-    try {
-      const res = await fetch("https://rae-api.com/api/random");
-      const data = await res.json();
-      if (data.ok) {
-        setPalabras([data.data.word]); // se muestra con tilde si tiene
-      } else {
-        setPalabras(["inicio"]);
-      }
-    } catch (error) {
-      console.error("Error obteniendo palabra inicial:", error);
-      setPalabras(["inicio"]);
-    }
-  };
+  // Generar nueva secuencia 
+  useEffect(() => { 
+    generarSecuencia(); 
+  }, [nivel]); 
 
-  // 👉 Verificar si palabra existe en la RAE
-  const verificarPalabraDiccionario = async (palabra) => {
-    try {
-      const res = await fetch(
-        `https://rae-api.com/api/words/${normalizar(palabra)}`
-      );
-      const data = await res.json();
-      return data.ok;
-    } catch (error) {
-      console.error("Error verificando palabra:", error);
-      return false;
-    }
-  };
+  const generarSecuencia = () => { 
+    const nuevaSecuencia = Array.from({ length: nivel }, () => Math.floor(Math.random() * 9) + 1 ); 
+    setSecuencia(nuevaSecuencia); 
+    setRespuesta(Array(nivel).fill("")); 
+    setMostrarSecuencia(true); 
+    setError(false); 
 
-  // 👉 Al iniciar o reiniciar
-  useEffect(() => {
-    fetchPalabraInicial();
-  }, []);
+    setTimeout(() => { 
+      setMostrarSecuencia(false); 
+      if (inputsRef.current[0]) { 
+        inputsRef.current[0].focus(); 
+      } 
+      setTiempoInicio(Date.now()); // iniciar conteo de tiempo 
+    }, 3000 + nivel * 500); 
+  }; 
 
-  // 👉 Última palabra y su sílaba
-  const ultimaPalabra = palabras[palabras.length - 1] || "";
-  const obtenerUltimaSilaba = (palabra) => {
-    if (palabra.length <= 2) return normalizar(palabra);
-    return normalizar(palabra.slice(-2));
-  };
-  const ultimaSilaba = obtenerUltimaSilaba(ultimaPalabra);
+  const handleChange = (index, value) => { 
+    if (/^[0-9]?$/.test(value)) { 
+      const nuevaRespuesta = [...respuesta]; 
+      nuevaRespuesta[index] = value; 
+      setRespuesta(nuevaRespuesta); 
 
-  // 👉 Inicia cuenta regresiva cada vez que cambia palabra
-  useEffect(() => {
-    if (!ultimaPalabra) return;
+      // avanzar al siguiente input si escribe un número 
+      if (value !== "" && index < nivel - 1) { 
+        inputsRef.current[index + 1]?.focus(); 
+      } 
+    } 
+  }; 
 
-    setTiempo(10);
-    if (timerRef.current) clearInterval(timerRef.current);
+  // 👈 Nuevo: moverse hacia atrás con Backspace 
+  const handleKeyDown = (index, e) => { 
+    if (e.key === "Backspace" && respuesta[index] === "" && index > 0) { 
+      inputsRef.current[index - 1]?.focus(); 
+    } 
+  }; 
 
-    timerRef.current = setInterval(() => {
-      setTiempo((t) => {
-        if (t <= 1) {
-          clearInterval(timerRef.current);
-          setPerdio(true);
-          setMensaje("⏳ Se acabó el tiempo. ¡Perdiste!");
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
+  const handleVerificar = () => { 
+    const tiempoRonda = tiempoInicio ? (Date.now() - tiempoInicio) / 1000 : 0; 
 
-    return () => clearInterval(timerRef.current);
-  }, [palabras]);
+    if (respuesta.join("") === secuencia.join("")) { 
+      audioExito.play(); 
+      setRondasCorrectas(rondasCorrectas + 1); 
+      setTiempoTotal(tiempoTotal + tiempoRonda); 
 
-  // 👉 Verificar palabra ingresada
-  const handleVerificar = async () => {
-    const palabraIngresadaNormalizada = normalizar(entrada.trim());
+      // calcular puntos: base 100 + bonus por rapidez 
+      const bonus = Math.max(0, 50 - Math.floor(tiempoRonda)); 
+      const puntosRonda = 100 + bonus; 
+      setPuntaje(puntaje + puntosRonda); 
 
-    if (!palabraIngresadaNormalizada) return;
+      // mostrar popup animado 
+      setLastScore(puntosRonda); 
+      setShowScoreMessage(true); 
+      setTimeout(() => setShowScoreMessage(false), 2000); 
 
-    // Verificar que comience con última sílaba
-    if (!palabraIngresadaNormalizada.startsWith(ultimaSilaba)) {
-      setMensaje(`❌ La palabra debe empezar con "${ultimaSilaba.toUpperCase()}".`);
-      setPerdio(true);
-      return;
-    }
+      const nuevosAciertos = aciertosSeguidos + 1; 
+      setAciertosSeguidos(nuevosAciertos); 
 
-    // Verificar si existe en diccionario
-    const existe = await verificarPalabraDiccionario(entrada.trim());
-    if (!existe) {
-      setMensaje("❌ Esa palabra no existe en el diccionario español.");
-      setPerdio(true);
-      return;
-    }
+      if (nuevosAciertos >= 3) { 
+        setNivel(nivel + 1); 
+        setAciertosSeguidos(0); 
+        setMensaje(null); 
+      } else { 
+        setMensaje(null); 
+        generarSecuencia(); 
+      } 
+    } else { 
+      audioError.play(); 
+      setMensaje("❌ Incorrecto. Fin de la partida."); 
+      setAciertosSeguidos(0); 
+      setError(true); 
+      setMostrarPuntaje(true); 
 
-    // ✅ Correcto → añadir palabra (manteniendo tilde si tiene)
-    setPalabras([...palabras, entrada.trim()]);
-    setEntrada("");
-    setMensaje("✅ ¡Bien hecho!");
+      guardarEnRanking(); // guardar en localStorage cuando termina 
+    } 
+  }; 
 
-    // Puntaje: +10 por palabra, + extra si sobró tiempo
-    setPuntaje((p) => p + 10 + tiempo);
-  };
+  const guardarEnRanking = () => { 
+    const partida = { 
+      puntaje, 
+      rondas: rondasCorrectas, 
+      tiempo: tiempoTotal.toFixed(1), 
+      fecha: new Date().toLocaleString(), 
+    }; 
 
-  // 👉 Reiniciar juego
-  const handleReiniciar = async () => {
-    setPerdio(false);
-    setMensaje(null);
-    setPuntaje(0);
-    setEntrada("");
-    await fetchPalabraInicial();
-  };
+    const ranking = JSON.parse(localStorage.getItem("rankingSecuencias")) || []; 
+    ranking.push(partida); 
 
-  return (
-    <div className="ejercicio-container">
-      <h2>✍️ Palabras Encadenadas</h2>
-      <p>
-        Escribe una palabra que empiece con la última sílaba resaltada de la
-        palabra anterior.
-      </p>
+    // ordenar de mayor a menor puntaje 
+    ranking.sort((a, b) => b.puntaje - a.puntaje); 
 
-      {/* Mostrar palabra actual con sílaba resaltada */}
-      {ultimaPalabra && (
-        <h3>
-          {ultimaPalabra.slice(0, -2)}
-          <span style={{ color: "red", fontWeight: "bold" }}>
-            {ultimaPalabra.slice(-2)}
-          </span>
-        </h3>
-      )}
+    localStorage.setItem("rankingSecuencias", JSON.stringify(ranking)); 
+  }; 
 
-      {/* Input o botones si perdió */}
-      {!perdio ? (
-        <div>
-          <input
-            type="text"
-            value={entrada}
-            onChange={(e) => setEntrada(e.target.value)}
-            placeholder={`Debe empezar con "${ultimaSilaba}"`}
-          />
-          <button onClick={handleVerificar}>Ingresar</button>
-        </div>
-      ) : (
-        <div style={{ marginTop: "15px" }}>
-          <button onClick={handleReiniciar}>🔄 Reintentar</button>
-          <button onClick={() => navigate("/Ejercicios")}>🏠 Menú</button>
-        </div>
-      )}
+  const reiniciarJuego = () => { 
+    setNivel(3); 
+    setAciertosSeguidos(0); 
+    setRondasCorrectas(0); 
+    setTiempoTotal(0); 
+    setPuntaje(0); 
+    setMensaje(null); 
+    setMostrarPuntaje(false); 
+    generarSecuencia(); 
+  }; 
 
-      {/* Tiempo restante */}
-      {!perdio && (
-        <p style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}>
-          ⏳ Tiempo restante: {tiempo} segundos
-        </p>
-      )}
+  const continuar = () => { 
+    if (irMenu) { 
+      navigate("/Ejercicios"); 
+    } else { 
+      reiniciarJuego(); 
+    } 
+  }; 
 
-      {/* Puntaje */}
-      <p style={{ marginTop: "10px", fontWeight: "bold" }}>🏆 Puntaje: {puntaje}</p>
+  // Manda al menú con puntaje 
+  const handleMenu = () => { 
+    navigate("/Ejercicios"); 
+  }; 
 
-      {/* Mensajes */}
-      {mensaje && (
-        <div
-          style={{
-            marginTop: "15px",
-            padding: "10px",
-            borderRadius: "8px",
-            background: mensaje.includes("✅") ? "#4caf50" : "#f44336",
-            color: "white",
-          }}
-        >
-          {mensaje}
-        </div>
-      )}
+  return ( 
+    <div className="ejercicio-container"> 
+      <h2>🧠 Ejercicio de Secuencias</h2> 
 
-      <h4>Lista de palabras:</h4>
-      <ul>
-        {palabras.map((p, i) => (
-          <li key={i}>{p}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+      {/* Pantalla de puntaje */} 
+      {mostrarPuntaje ? ( 
+        <div className="resultado-card"> 
+          <h3>📊 Resultados</h3> 
+          <p> 
+            ✅ Rondas correctas: <strong>{rondasCorrectas}</strong> 
+          </p> 
+          <p> 
+            ⏱️ Tiempo total: <strong>{tiempoTotal.toFixed(1)}s</strong> 
+          </p> 
+          <p> 
+            ⭐ Puntaje total: <strong>{puntaje}</strong> 
+          </p> 
+          <div className="resultado-actions"> 
+            <button onClick={continuar}>🔄 Reintentar</button> 
+            <button onClick={handleMenu}>🏠 Volver al Menú</button> 
+          </div> 
+        </div> 
+      ) : ( 
+        <> 
+          <p>Memoriza la secuencia y repítela en orden.</p> 
 
-export default EjercicioPalabrasEncadenadas;
+          {/* Mostrar secuencia */} 
+          {mostrarSecuencia ? ( 
+            <div className="secuencia"> 
+              <h3>{secuencia.join(" ")}</h3> 
+            </div> 
+          ) : ( 
+            <div className="inputs-secuencia"> 
+              {respuesta.map((num, index) => ( 
+                <input 
+                  key={index} 
+                  ref={(el) => (inputsRef.current[index] = el)} 
+                  type="text" 
+                  maxLength={1} 
+                  value={num} 
+                  onChange={(e) => handleChange(index, e.target.value)} 
+                  onKeyDown={(e) => handleKeyDown(index, e)} 
+                /> 
+              ))} 
+              <button onClick={handleVerificar}>Verificar</button> 
+            </div> 
+          )} 
+
+          {/* Mensajes de error */} 
+          {mensaje && ( 
+            <div className="mensaje-error"> 
+              {mensaje} 
+              {error && ( 
+                <div className="resultado-actions"> 
+                  <button 
+                    onClick={() => { 
+                      setIrMenu(false); 
+                      setMostrarPuntaje(true); 
+                    }} 
+                  > 
+                    🔄 Reintentar 
+                  </button> 
+                  <button 
+                    onClick={() => { 
+                      setIrMenu(true); 
+                      setMostrarPuntaje(true); 
+                    }} 
+                  > 
+                    🏠 Menú 
+                  </button> 
+                </div> 
+              )} 
+            </div> 
+          )} 
+
+          <p> 
+            <strong>Nivel actual:</strong> {nivel} 
+          </p> 
+          <p> 
+            <strong>Progreso:</strong> {aciertosSeguidos}/3 aciertos para subir de nivel 
+          </p> 
+          <p> 
+            ⭐ <strong>Puntaje:</strong> {puntaje} 
+          </p> 
+        </> 
+      )} 
+
+      {/* Popup de puntaje ganado */} 
+      {showScoreMessage && <div className="puntaje-popup">+{lastScore} ✅</div>} 
+    </div> 
+  ); 
+} 
+
+export default EjercicioSecuencias;
