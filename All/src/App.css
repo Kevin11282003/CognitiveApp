@@ -98,21 +98,9 @@ main {
 #divisaun button { padding: 12px; border: none; border-radius: 10px; background: #1976d2; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; } 
 #divisaun button:hover { background: #0d47a1; transform: translateY(-2px); } 
 
-.progreso-container { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); font-family: "Segoe UI", sans-serif; } 
-.progreso-actions { margin-bottom: 1rem; } 
-.progreso-actions button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; } 
-.progreso-actions button:hover { background: #0d47a1; } 
-.progreso-titulo { font-size: 1.8rem; margin-bottom: 0.5rem; color: #222; } 
-.progreso-subtitulo { font-size: 1rem; color: #555; margin-bottom: 2rem; } 
-.progreso-charts { display: grid; gap: 1.5rem; } 
-.progreso-chart { background: #f9f9f9; padding: 1.2rem; border-radius: 12px; } 
-.bar-wrap { display: flex; gap: 6px; align-items: flex-end; height: 160px; margin: 1rem 0; } 
-.bar { flex: 1; background: linear-gradient(180deg, #3b82f6, #2563eb); border-radius: 6px 6px 0 0; } 
-.legend { font-size: 0.9rem; color: #666; } 
-
 /* Estilo moderno y consistente con CognitiveApp */ 
 #registro-container { background-color: #ffffff; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); width: 340px; text-align: center; margin: 3rem auto; font-family: "Segoe UI", sans-serif; } 
-#registro-container h2 { margin-bottom: 1.5rem; color: #1976d2; font-size: 1.6rem; font-weight: 600; } 
+#registro-container h2 { color: #1976d2; font-size: 1.6rem; font-weight: 600; } 
 #registro-container form { display: flex; flex-direction: column; gap: 1rem; } 
 #registro-container input { padding: 12px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9; color: #333; font-size: 1rem; transition: all 0.3s ease; } 
 #registro-container input:focus { outline: none; background-color: #fff; border-color: #1976d2; box-shadow: 0 0 6px rgba(25, 118, 210, 0.4); } 
@@ -120,7 +108,7 @@ main {
 #registro-container button:hover { background: #0d47a1; transform: translateY(-2px); } 
 #registro-container p { color: #d32f2f; font-size: 0.9rem; margin-top: 0.5rem; } 
 /* Texto secundario */ 
-#registro-container h2:last-of-type { margin-top: 2rem; font-size: 1rem; color: #555; font-weight: 500; } 
+#registro-container h2:last-of-type { font-size: 1rem; color: #555; font-weight: 500; } 
 /* Botón alternativo (ej: iniciar sesión en vez de registrarse) */ 
 #registro-container button:nth-of-type(2) { background: transparent; color: #1976d2; border: 1px solid #1976d2; margin-top: 0.75rem; } 
 #registro-container button:nth-of-type(2):hover { background-color: #f0f7ff; } 
@@ -548,6 +536,55 @@ button:hover:not(:disabled) { background-color: #1565c0; }
 
 /*palabras encadenadas css*/
 
+/* Contenedor del input y botón en columna */
+.input-container {
+  display: flex;
+  flex-direction: column; /* coloca el botón debajo del input */
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* espacio entre input y botón */
+  margin: 20px 0;
+}
+
+/* Campo de texto */
+.input-container input {
+  padding: 14px 18px;
+  font-size: 1.2rem;
+  border: 2px solid #1976d2;
+  border-radius: 10px;
+  outline: none;
+  width: 280px;
+  text-align: center;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-container input:focus {
+  border-color: #0d47a1;
+  box-shadow: 0 0 6px rgba(25, 118, 210, 0.6);
+}
+
+/* Botón debajo del input */
+.input-container button {
+  padding: 14px 24px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  background: #1976d2;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  width: 100%; /* opcional: hace que ocupe el mismo ancho del input */
+  max-width: 280px; /* igual que el input */
+}
+
+.input-container button:hover {
+  background: #0d47a1;
+  transform: scale(1.05);
+}
+
+
+
 .resultado-card {
   background: #fff;
   color: black;
@@ -620,3 +657,370 @@ body.alto-contraste .resultado-card {
   font-weight: normal;
 }
 
+
+
+
+/* Progreso css*/
+
+/* Contenedor general */
+.progreso-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f5f6fa;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+}
+
+/* Títulos */
+.progreso-container h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.progreso-container h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #34495e;
+}
+
+/* Racha y puntaje */
+.progreso-container p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+/* Tabs por juego */
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.tabs button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #bdc3c7;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tabs button.active {
+  background: #3498db;
+}
+
+.tabs button:hover {
+  background: #2980b9;
+}
+
+/* Gráfica de semana */
+.grafica-semana {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 700px;
+  height: 120px;
+  margin-bottom: 10px;
+  background: #ecf0f1;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.bar {
+  width: 40px;
+  border-radius: 6px 6px 0 0;
+}
+
+.dias-legend {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 700px;
+  font-weight: bold;
+  color: #34495e;
+}
+
+/* Ranking global y ejercicios fallidos */
+.ranking-global, .ejercicios-fallidos {
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+th {
+  background: #3498db;
+  color: #fff;
+  font-weight: bold;
+}
+
+tbody tr:hover {
+  background: #f1f3f6;
+}
+
+/* Selector de semana */
+.selector-semana {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.selector-semana button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #bdc3c7;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.selector-semana button.active {
+  background: #e67e22;
+}
+
+.selector-semana button:hover {
+  background: #d35400;
+}
+
+/* Tab contenido */
+.tab-content {
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bar-wrap {
+    height: 100px;
+  }
+
+  .bar {
+    width: 30px;
+  }
+
+  .dias-legend span {
+    font-size: 0.8rem;
+  }
+
+  table th, table td {
+    padding: 8px 6px;
+  }
+}
+
+/* usuario css*/
+
+.btn-logout {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  margin-top: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.btn-logout:hover {
+  background: #c0392b;
+}
+
+.perfil-card.moderno {
+  display: flex;
+  align-items: center;
+  padding: 25px;
+  background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  max-width: 700px;
+  margin: 30px auto;
+  position: relative;
+  gap: 20px;
+}
+
+.avatar {
+  position: relative;
+}
+
+.avatar img {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 3px solid #0d8abc;
+}
+
+.racha {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff6f61;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.datos {
+  flex: 1;
+}
+
+.datos h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+}
+
+.datos p {
+  margin: 6px 0;
+  font-size: 1rem;
+}
+
+.datos input {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 60%;
+  font-size: 1rem;
+}
+
+.btn-editar, .btn-guardar {
+  margin-top: 15px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-editar {
+  background-color: #0d8abc;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #086f94;
+}
+
+.btn-guardar {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-guardar:hover {
+  background-color: #1e7e34;
+}
+
+
+/* Contenedor principal */
+.acces-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Título */
+.acces-titulo {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-weight: 700;
+}
+
+/* Botones */
+.acces-actions {
+  margin: 1rem 0;
+}
+
+.acces-actions button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  margin: 0.4rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.acces-actions button:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+}
+
+.acces-actions button:active {
+  transform: scale(0.95);
+}
+
+/* Tarjeta de vista previa */
+.acces-card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+}
+
+.acces-card strong {
+  display: block;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+/* Modo alto contraste */
+body.alto-contraste {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+body.alto-contraste .acces-container {
+  background: #111;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+body.alto-contraste button {
+  background: #facc15 !important;
+  color: #000 !important;
+}
+
+body.alto-contraste .acces-card {
+  background: #222;
+  border: 1px solid #facc15;
+}

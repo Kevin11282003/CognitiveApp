@@ -3,13 +3,12 @@ import { supabase } from '../../supabase';
 import { useNavigate } from 'react-router-dom';
 import "../../App.css";
 
-
-
 function Registro() {
   const [formulario, setFormulario] = useState({
     nombre: '',
     correo: '',
     password: '',
+    confirmarPassword: '',
     fechaNacimiento: '',
     telefono: '',
   });
@@ -25,6 +24,19 @@ function Registro() {
     e.preventDefault();
     setError(null);
 
+    // Validar que la contraseña y confirmar coincidan
+    if (formulario.password !== formulario.confirmarPassword) {
+      setError("❌ Las contraseñas no coinciden.");
+      return;
+    }
+
+    // Validar fuerza de contraseña
+    const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!regexPassword.test(formulario.password)) {
+      setError("❌ La contraseña debe tener mínimo 8 caracteres, al menos una letra y un número.");
+      return;
+    }
+
     // 1. Crear usuario en Auth
     const { data, error: errorAuth } = await supabase.auth.signUp({
       email: formulario.correo,
@@ -38,7 +50,7 @@ function Registro() {
 
     const uid = data.user.id;
 
-    // 2. Insertar en tabla "usuarios"
+    // 2. Insertar en tabla "usuario"
     const { error: errorInsert } = await supabase.from("usuario").insert([
       {
         id: uid,
@@ -51,7 +63,7 @@ function Registro() {
     ]);
 
     if (errorInsert) {
-      setError("Usuario creado pero error en tabla usuarios: " + errorInsert.message);
+      setError("Usuario creado pero error en tabla usuario: " + errorInsert.message);
     } else {
       navigate("/login");
     }
@@ -59,7 +71,7 @@ function Registro() {
 
   return (
     <section id="registro-container">
-      <h2>Registro</h2>
+      <h4>Registro</h4>
       <form onSubmit={handleRegistro}>
         <input
           type="text"
@@ -86,12 +98,26 @@ function Registro() {
           required
         />
         <input
+          type="password"
+          name="confirmarPassword"
+          placeholder="Confirmar contraseña"
+          value={formulario.confirmarPassword}
+          onChange={handleChange}
+          required
+        />
+
+        <h2>
+          Fecha de nacimiento
+        </h2>
+        <input
           type="date"
           name="fechaNacimiento"
+          id="fechaNacimiento"
           value={formulario.fechaNacimiento}
           onChange={handleChange}
           required
         />
+
         <input
           type="text"
           name="telefono"
@@ -102,7 +128,7 @@ function Registro() {
         />
         <button type="submit">Registrarse</button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
       <h4>Ya tengo cuenta y quiero loguearme</h4>
       <button onClick={() => navigate(`/login`)}>Login</button>
     </section>

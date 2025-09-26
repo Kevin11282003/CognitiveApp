@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
 import "../../App.css";
+
 export default function Usuario() {
   const [usuario, setUsuario] = useState(null);
   const [form, setForm] = useState({
@@ -8,36 +9,41 @@ export default function Usuario() {
     correo: "",
     fecha_nacimiento: "",
     telefono: "",
-    roll: ""
+    roll: "",
+    racha_diaria: 0,
   });
-
-  const [nuevaUrl, setNuevaUrl] = useState("");
-  const [imagenes, setImagenes] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
+  const [editMode, setEditMode] = useState(false);
 
-  // Obtener datos del usuario
+  // Cargar datos del usuario
   useEffect(() => {
     async function fetchUsuario() {
       setCargando(true);
       setError(null);
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const { data, error } = await supabase
-            .from("usuario")
-            .select("*")
-            .eq("id", user.id)
-            .single();
-          if (data) {
-            setUsuario(data);
-            setForm(data);
-            fetchImagenes(user.id);
-          } else {
-            setError("Error al cargar los datos del usuario.");
-          }
+
+        if (!user) {
+          setError("Usuario no logueado");
+          setCargando(false);
+          return;
         }
-      } catch (error) {
+
+        const { data, error } = await supabase
+          .from("usuario")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (error || !data) {
+          setError("Error al cargar los datos del usuario.");
+        } else {
+          setUsuario(data);
+          setForm(data);
+        }
+      } catch (err) {
+        console.error(err);
         setError("Error al obtener los datos del usuario.");
       } finally {
         setCargando(false);
@@ -46,26 +52,6 @@ export default function Usuario() {
 
     fetchUsuario();
   }, []);
-
-  const fetchImagenes = async (usuarioid) => {
-    setCargando(true);
-    setError(null);
-    try {
-      const { data, error } = await supabase
-        .from("multimedia")
-        .select("*")
-        .eq("usuarioid", usuarioid);
-      if (data) {
-        setImagenes(data);
-      } else {
-        setError("Error al cargar las imágenes.");
-      }
-    } catch (error) {
-      setError("Error al cargar las imágenes.");
-    } finally {
-      setCargando(false);
-    }
-  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -77,56 +63,23 @@ export default function Usuario() {
     try {
       const { error } = await supabase
         .from("usuario")
-        .update(form)
+        .update({
+          nombre: form.nombre,
+          correo: form.correo,
+          telefono: form.telefono,
+        })
         .eq("id", usuario.id);
-      if (error) {
-        setError("Error al actualizar");
-      } else {
-        alert("Datos actualizados");
-      }
-    } catch (error) {
-      setError("Error al actualizar");
-    } finally {
-      setCargando(false);
-    }
-  };
 
-  const handleAgregarUrl = async () => {
-    if (!nuevaUrl.trim()) return;
-    setCargando(true);
-    setError(null);
-    try {
-      const { error } = await supabase
-        .from("multimedia")
-        .insert([{ url: nuevaUrl, usuarioid: usuario.id }]);
       if (error) {
-        setError("Error al agregar la imagen");
+        setError("Error al actualizar los datos: " + error.message);
       } else {
-        setNuevaUrl("");
-        fetchImagenes(usuario.id);
+        alert("Datos actualizados correctamente");
+        setUsuario({ ...usuario, ...form });
+        setEditMode(false);
       }
-    } catch (error) {
-      setError("Error al agregar la imagen");
-    } finally {
-      setCargando(false);
-    }
-  };
-
-  const handleEliminarImagen = async (id) => {
-    setCargando(true);
-    setError(null);
-    try {
-      const { error } = await supabase
-        .from("multimedia")
-        .delete()
-        .eq("id", id);
-      if (!error) {
-        setImagenes(imagenes.filter((img) => img.id !== id));
-      } else {
-        setError("Error al eliminar la imagen.");
-      }
-    } catch (error) {
-      setError("Error al eliminar la imagen.");
+    } catch (err) {
+      console.error(err);
+      setError("Error al actualizar los datos.");
     } finally {
       setCargando(false);
     }
@@ -135,68 +88,70 @@ export default function Usuario() {
   // Cerrar sesión
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    setUsuario(null);
-    setImagenes([]);
+    window.location.reload(); // Recarga para volver al login o pantalla inicial
   };
 
   if (cargando) return <p>Cargando...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-
   if (!usuario) return <p>No se encontró el usuario.</p>;
 
   return (
-  <div id="divsu">
-    <div className="perfil-section">
-      <h2>Perfil de Usuario</h2>
-      <div className="form-group">
-        <label>Nombre:
-          <input name="nombre" value={form.nombre} onChange={handleChange} />
-        </label>
-        <label>Correo:
-          <input name="correo" value={form.correo} onChange={handleChange} />
-        </label>
-        <label>Fecha de nacimiento:
-          <input type="date" name="fecha_nacimiento" value={form.fecha_nacimiento} onChange={handleChange} />
-        </label>
-        <label>Teléfono:
-          <input name="telefono" value={form.telefono} onChange={handleChange} />
-        </label>
-        <label>Rol:
-          <input name="roll" value={form.roll} onChange={handleChange} />
-        </label>
-      </div>
-      <button onClick={handleUpdate} disabled={cargando}>Guardar cambios</button>
-    </div>
-
-    <div className="imagenes-section">
-      <h3>Agregar imagen</h3>
-      <div className="agregar-imagen">
-        <input
-          type="text"
-          placeholder="URL de la imagen"
-          value={nuevaUrl}
-          onChange={(e) => setNuevaUrl(e.target.value)}
+    <div className="perfil-card moderno">
+      <div className="avatar">
+        <img
+          src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
+            usuario.nombre
+          )}&background=random&color=fff&size=128&rounded=true&bold=true`}
+          alt="Avatar"
         />
-        <button onClick={handleAgregarUrl} disabled={cargando}>Agregar</button>
+        <div className="racha">
+          🔥 {usuario.racha_diaria} día{usuario.racha_diaria !== 1 ? "s" : ""}
+        </div>
       </div>
 
-      <h3>Imágenes guardadas</h3>
-      <ul className="lista-imagenes">
-        {imagenes.map((img) => (
-          <li key={img.id}>
-            <img src={img.url} alt="Imagen" width="150" />
-            <br />
-            <button onClick={() => handleEliminarImagen(img.id)} disabled={cargando}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <div className="datos">
+        <h2>
+          {editMode ? (
+            <input name="nombre" value={form.nombre} onChange={handleChange} />
+          ) : (
+            usuario.nombre
+          )}
+        </h2>
+        <p>
+          <strong>Correo:</strong>{" "}
+          {editMode ? (
+            <input name="correo" value={form.correo} onChange={handleChange} />
+          ) : (
+            usuario.correo
+          )}
+        </p>
+        <p>
+          <strong>Fecha de nacimiento:</strong> {usuario.fecha_nacimiento}
+        </p>
+        <p>
+          <strong>Teléfono:</strong>{" "}
+          {editMode ? (
+            <input name="telefono" value={form.telefono} onChange={handleChange} />
+          ) : (
+            usuario.telefono
+          )}
+        </p>
 
-    <div className="logout-section">
-      <h2>¿Deseas cerrar sesión?</h2>
-      <button onClick={handleLogout} disabled={cargando}>Cerrar sesión</button>
-    </div>
-  </div>
-);
+        {!editMode ? (
+          <button className="btn-editar" onClick={() => setEditMode(true)}>
+            ✏️ Editar
+          </button>
+        ) : (
+          <button className="btn-guardar" onClick={handleUpdate}>
+            💾 Guardar cambios
+          </button>
+        )}
 
+        {/* Botón cerrar sesión */}
+        <button className="btn-logout" onClick={handleLogout}>
+          🚪 Cerrar sesión
+        </button>
+      </div>
+    </div>
+  );
 }

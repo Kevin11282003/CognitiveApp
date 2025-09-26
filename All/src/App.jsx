@@ -12,7 +12,7 @@ import Progreso from './Componentes/Progreso/Index';
 import Registro from './Componentes/Registro/Index';
 import Accesibilidad from './Componentes/Accesibilidad/Index';
 import Memoria from './Componentes/Memoria/Index';
-import Palabras from './Componentes/Palabras/Index';
+import Palabras from './Componentes/PalabrasEncadenadas/Index';
 import MenuMemoria from './Componentes/MenuMemoria/Index';
 import './App.css';
 
@@ -48,7 +48,7 @@ function App() {
   <Route path="/" element={usuario ? <Navigate to="/Inicio" /> : <Navigate to="/login" />} />
   <Route path="/Inicio" element={usuario ? <Inicio /> : <Navigate to="/login" />} />
   <Route path="/Ejercicios" element={usuario ? <Ejercicios /> : <Navigate to="/login" />} />
-  <Route path="/Progreso" element={usuario ? <Progreso /> : <Navigate to="/login" />} />
+  <Route path="/Progreso" element={usuario ? <Progreso usuarioId={usuario.id} /> : <Navigate to="/login" />} />
   <Route path="/Memoria" element={usuario ? <Memoria /> : <Navigate to="/login" />} />
   <Route path="/Palabras" element={usuario ? <Palabras /> : <Navigate to="/login" />} />
   <Route path="/MenuMemoria" element={usuario ? <MenuMemoria /> : <Navigate to="/login" />} />

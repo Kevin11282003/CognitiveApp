@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../supabase";
 import "../../App.css";
 
 function EjercicioSecuencias() {
@@ -22,6 +23,8 @@ function EjercicioSecuencias() {
   const [showScoreMessage, setShowScoreMessage] = useState(false);
   const [lastScore, setLastScore] = useState(0);
 
+  const [historialSecuencias, setHistorialSecuencias] = useState([]); // ← Aquí guardamos todas las secuencias generadas
+
   const inputsRef = useRef([]);
   const navigate = useNavigate();
 
@@ -42,12 +45,13 @@ function EjercicioSecuencias() {
     setMostrarSecuencia(true);
     setError(false);
 
+    // Guardamos localmente la secuencia generada
+    setHistorialSecuencias(prev => [...prev, nuevaSecuencia]);
+
     setTimeout(() => {
       setMostrarSecuencia(false);
-      if (inputsRef.current[0]) {
-        inputsRef.current[0].focus();
-      }
-      setTiempoInicio(Date.now()); // iniciar conteo de tiempo
+      if (inputsRef.current[0]) inputsRef.current[0].focus();
+      setTiempoInicio(Date.now());
     }, 3000 + nivel * 500);
   };
 
@@ -56,22 +60,17 @@ function EjercicioSecuencias() {
       const nuevaRespuesta = [...respuesta];
       nuevaRespuesta[index] = value;
       setRespuesta(nuevaRespuesta);
-
-      // avanzar al siguiente input si escribe un número
-      if (value !== "" && index < nivel - 1) {
-        inputsRef.current[index + 1]?.focus();
-      }
+      if (value !== "" && index < nivel - 1) inputsRef.current[index + 1]?.focus();
     }
   };
 
-  // 👈 Nuevo: moverse hacia atrás con Backspace
   const handleKeyDown = (index, e) => {
     if (e.key === "Backspace" && respuesta[index] === "" && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }
   };
 
-  const handleVerificar = () => {
+  const handleVerificar = async () => {
     const tiempoRonda = tiempoInicio ? (Date.now() - tiempoInicio) / 1000 : 0;
 
     if (respuesta.join("") === secuencia.join("")) {
@@ -79,12 +78,10 @@ function EjercicioSecuencias() {
       setRondasCorrectas(rondasCorrectas + 1);
       setTiempoTotal(tiempoTotal + tiempoRonda);
 
-      // calcular puntos: base 100 + bonus por rapidez
       const bonus = Math.max(0, 50 - Math.floor(tiempoRonda));
       const puntosRonda = 100 + bonus;
       setPuntaje(puntaje + puntosRonda);
 
-      // mostrar popup animado
       setLastScore(puntosRonda);
       setShowScoreMessage(true);
       setTimeout(() => setShowScoreMessage(false), 1500);
@@ -95,37 +92,64 @@ function EjercicioSecuencias() {
       if (nuevosAciertos >= 3) {
         setNivel(nivel + 1);
         setAciertosSeguidos(0);
-        setMensaje(null); // quitamos texto largo
+        setMensaje(null);
       } else {
-        setMensaje(null); // solo usamos popup de puntaje
+        setMensaje(null);
         generarSecuencia();
       }
     } else {
       audioError.play();
       setMensaje("❌ Incorrecto. Fin de la partida.");
-      setAciertosSeguidos(0);
       setError(true);
       setMostrarPuntaje(true);
 
-      guardarEnRanking(); // 👈 guardar en localStorage cuando termina
+      // Guardamos en Supabase la última secuencia generada
+      await guardarEnRanking();
     }
   };
 
-  const guardarEnRanking = () => {
+  const guardarEnRanking = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return console.error("No hay usuario autenticado");
+
+    // Tomamos la última secuencia generada como la secuencia fallida
+    const secuenciaFallida = historialSecuencias[historialSecuencias.length - 1].join(",");
+
     const partida = {
+      usuarioid: user.id,
+      juego: "Secuencias",
       puntaje,
-      rondas: rondasCorrectas,
-      tiempo: tiempoTotal.toFixed(1),
-      fecha: new Date().toLocaleString(),
+      nivel_fallido: nivel,
+      rondas_correctas: rondasCorrectas,
+      tiempo_total: tiempoTotal.toFixed(1),
+      ejercicio_fallido: secuenciaFallida,
     };
 
+    // Guardar localmente
     const ranking = JSON.parse(localStorage.getItem("rankingSecuencias")) || [];
     ranking.push(partida);
-
-    // ordenar de mayor a menor puntaje
     ranking.sort((a, b) => b.puntaje - a.puntaje);
-
     localStorage.setItem("rankingSecuencias", JSON.stringify(ranking));
+
+    // Subir a Supabase
+    const { error } = await supabase.from("resultados_juegos").insert([partida]);
+    if (error) console.error("❌ Error subiendo a Supabase:", error.message);
+
+    // Validar racha diaria
+    const hoyStr = new Date().toISOString().split("T")[0];
+    const { data: juegosHoy } = await supabase
+      .from("resultados_juegos")
+      .select("id")
+      .eq("usuarioid", user.id)
+      .gte("fecha", hoyStr + "T00:00:00")
+      .lte("fecha", hoyStr + "T23:59:59");
+
+    if (!juegosHoy.length) {
+      await supabase
+        .from("usuario")
+        .update({ racha_diaria: supabase.raw("racha_diaria + 1") })
+        .eq("id", user.id);
+    }
   };
 
   const reiniciarJuego = () => {
@@ -136,27 +160,21 @@ function EjercicioSecuencias() {
     setPuntaje(0);
     setMensaje(null);
     setMostrarPuntaje(false);
+    setHistorialSecuencias([]);
     generarSecuencia();
   };
 
   const continuar = () => {
-    if (irMenu) {
-      navigate("/Ejercicios");
-    } else {
-      reiniciarJuego();
-    }
+    if (irMenu) navigate("/Ejercicios");
+    else reiniciarJuego();
   };
 
-  // Manda al menú con puntaje
-  const handleMenu = () => {
-    navigate("/Ejercicios");
-  };
+  const handleMenu = () => navigate("/Ejercicios");
 
   return (
     <div className="ejercicio-container">
       <h2>🧠 Ejercicio de Secuencias</h2>
 
-      {/* Pantalla de puntaje */}
       {mostrarPuntaje ? (
         <div className="resultado-card">
           <h3>📊 Resultados</h3>
@@ -172,7 +190,6 @@ function EjercicioSecuencias() {
         <>
           <p>Memoriza la secuencia y repítela en orden.</p>
 
-          {/* Mostrar secuencia */}
           {mostrarSecuencia ? (
             <div className="secuencia">
               <h3>{secuencia.join(" ")}</h3>
@@ -194,7 +211,6 @@ function EjercicioSecuencias() {
             </div>
           )}
 
-          {/* Mensajes de error */}
           {mensaje && (
             <div
               style={{
@@ -206,26 +222,6 @@ function EjercicioSecuencias() {
               }}
             >
               {mensaje}
-              {error && (
-                <div className="resultado-actions">
-                  <button
-                    onClick={() => {
-                      setIrMenu(false);
-                      setMostrarPuntaje(true);
-                    }}
-                  >
-                    🔄 Reintentar
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIrMenu(true);
-                      setMostrarPuntaje(true);
-                    }}
-                  >
-                    🏠 Menú
-                  </button>
-                </div>
-              )}
             </div>
           )}
 
@@ -235,7 +231,6 @@ function EjercicioSecuencias() {
         </>
       )}
 
-      {/* Popup de puntaje ganado */}
       {showScoreMessage && (
         <div className="puntaje-popup">+{lastScore} ✅</div>
       )}

@@ -5,80 +5,63 @@ import "../../App.css";
 export default function Accesibilidad() {
   const navigate = useNavigate();
 
-  // Cargar valores iniciales desde localStorage o valores por defecto
+  // Tamaño de letra inicial (desde localStorage o por defecto)
   const [fs, setFs] = useState(() => {
     return parseInt(localStorage.getItem("fontSize")) || 18;
   });
 
+  // Estado de contraste inicial
   const [contraste, setContraste] = useState(() => {
     return localStorage.getItem("contraste") === "true" || false;
   });
 
-  // Guardar en localStorage cada vez que cambie el tamaño de letra
+  // Guardar tamaño de fuente en localStorage
   useEffect(() => {
     localStorage.setItem("fontSize", fs);
   }, [fs]);
 
-  // Guardar en localStorage cada vez que cambie el contraste
+  // Guardar contraste en localStorage
   useEffect(() => {
     localStorage.setItem("contraste", contraste);
   }, [contraste]);
 
-  // Aplicar estilos globales al body y otros contenedores
+  // Aplicar tamaño de fuente global
   useEffect(() => {
-    document.body.style.fontSize = `${fs}px`;
+    document.documentElement.style.fontSize = `${fs}px`;
+  }, [fs]);
 
+  // Aplicar clase de alto contraste al body
+  useEffect(() => {
     if (contraste) {
       document.body.classList.add("alto-contraste");
     } else {
       document.body.classList.remove("alto-contraste");
     }
-  }, [fs, contraste]);
+  }, [contraste]);
 
   return (
-    <div
-      className={`acces-container ${contraste ? "alto-contraste" : ""}`}
-      style={{ fontSize: fs }}
-    >
+    <div className="acces-container">
+      <h2 className="acces-titulo">Opciones de accesibilidad</h2>
+
       <div className="acces-actions">
-        <button onClick={() => navigate(-1)}>← Volver</button>
+        <button onClick={() => setFs(fs + 2)}>Aumentar letra</button>
+        <button onClick={() => setFs(fs > 10 ? fs - 2 : 10)}>
+          Disminuir letra
+        </button>
+        <button onClick={() => setFs(18)}>Restablecer</button>
       </div>
 
-      <h2 className="acces-titulo">Accesibilidad y apariencia</h2>
+      <div className="acces-actions">
+        <button onClick={() => setContraste(!contraste)}>
+          {contraste ? "Desactivar contraste alto" : "Activar contraste alto"}
+        </button>
+      </div>
 
-      <div className="acces-grid">
-        <div className="acces-card">
-          <strong>Tamaño de letra</strong>
-          <p>Cambia el tamaño base de la tipografía para mejorar la lectura.</p>
-          <div className="controls">
-            <button onClick={() => setFs(16)}>A 16</button>
-            <button onClick={() => setFs(18)}>A 18</button>
-            <button onClick={() => setFs(20)}>A 20</button>
-          </div>
-        </div>
-
-        <div className="acces-card">
-          <strong>Contraste</strong>
-          <p>Activa el modo de alto contraste para mejorar la visibilidad.</p>
-          <button onClick={() => setContraste(!contraste)}>
-            Alternar contraste
-          </button>
-        </div>
-
-        <div className="acces-card">
-          <strong>Preferencias</strong>
-          <p>Guardamos tus preferencias de accesibilidad en este navegador.</p>
-          <button
-            onClick={() => {
-              setFs(18);
-              setContraste(false);
-              localStorage.removeItem("fontSize");
-              localStorage.removeItem("contraste");
-            }}
-          >
-            Restablecer
-          </button>
-        </div>
+      <div className="acces-card">
+        <strong>Vista previa:</strong>
+        <p style={{ fontSize: `${fs}px` }}>
+          Este es un texto de ejemplo con el tamaño de letra actual.
+        </p>
       </div>
     </div>
   );
