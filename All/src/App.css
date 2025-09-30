@@ -43,6 +43,47 @@ main {
 }
 
 
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-top: 1px solid #ddd;
+}
+
+.menu-list {
+  display: flex;
+  justify-content: space-around;
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+}
+
+.menu-list li {
+  text-align: center;
+  flex: 1;
+}
+
+.menu-list a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 12px;
+}
+
+.menu-list .icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.menu-list .text {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+
 .acces-container { max-width: 900px; margin: 2rem auto; padding: 1.5rem; background: #fff; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); font-family: "Segoe UI", sans-serif; } 
 .acces-actions { margin-bottom: 1rem; } 
 .acces-actions button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; } 
@@ -836,38 +877,26 @@ tbody tr:hover {
   }
 }
 
-/* usuario css*/
-
-.btn-logout {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.2rem;
-  margin-top: 1rem;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
-  width: 100%;
-}
-
-.btn-logout:hover {
-  background: #c0392b;
-}
-
+/* ===== USUARIO CARD ===== */
 .perfil-card.moderno {
   display: flex;
   align-items: center;
   padding: 25px;
-  background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  max-width: 700px;
+  background: linear-gradient(145deg, #f9f9f9, #ececec);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  max-width: 750px;
   margin: 30px auto;
   position: relative;
-  gap: 20px;
+  gap: 24px;
+  transition: transform 0.3s ease;
 }
 
+.perfil-card.moderno:hover {
+  transform: translateY(-3px);
+}
+
+/* ===== AVATAR ===== */
 .avatar {
   position: relative;
 }
@@ -877,52 +906,70 @@ tbody tr:hover {
   height: 128px;
   border-radius: 50%;
   border: 3px solid #0d8abc;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 .racha {
   position: absolute;
-  bottom: -10px;
+  bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
   background: #ff6f61;
   color: white;
-  padding: 4px 10px;
+  padding: 6px 14px;
   border-radius: 20px;
   font-weight: bold;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
+/* ===== DATOS DEL PERFIL ===== */
 .datos {
   flex: 1;
 }
 
 .datos h2 {
-  margin: 0 0 10px 0;
-  font-size: 1.8rem;
+  margin: 0 0 12px 0;
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #222;
 }
 
 .datos p {
   margin: 6px 0;
   font-size: 1rem;
+  color: #444;
 }
 
 .datos input {
-  padding: 6px 8px;
-  border-radius: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  width: 60%;
+  width: 70%;
   font-size: 1rem;
+  margin-top: 4px;
+  transition: border 0.3s;
 }
 
-.btn-editar, .btn-guardar {
-  margin-top: 15px;
+.datos input:focus {
+  border: 1px solid #0d8abc;
+  outline: none;
+}
+
+/* ===== BOTONES ===== */
+button {
+  margin-top: 12px;
   padding: 10px 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
 }
 
+/* Botón Editar */
 .btn-editar {
   background-color: #0d8abc;
   color: white;
@@ -932,6 +979,7 @@ tbody tr:hover {
   background-color: #086f94;
 }
 
+/* Botón Guardar */
 .btn-guardar {
   background-color: #28a745;
   color: white;
@@ -941,86 +989,106 @@ tbody tr:hover {
   background-color: #1e7e34;
 }
 
+/* Botón Cambiar Contraseña */
+.btn-password {
+  background: #4f46e5;
+  color: white;
+}
 
-/* Contenedor principal */
+.btn-password:hover {
+  background: #4338ca;
+}
+
+/* Botón Cambiar Correo */
+.btn-email {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-email:hover {
+  background: #d97706;
+}
+
+/* Botón Cerrar sesión */
+.btn-logout {
+  background: #e74c3c;
+  color: white;
+}
+
+.btn-logout:hover {
+  background: #c0392b;
+}
+
+/* ===== CONTENEDOR EXTRA (para forms de cambio) ===== */
 .acces-container {
   max-width: 700px;
   margin: 2rem auto;
   padding: 2rem;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.12);
   text-align: center;
   transition: all 0.3s ease;
 }
 
-/* Título */
 .acces-titulo {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: #333;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #222;
   font-weight: 700;
 }
 
-/* Botones */
 .acces-actions {
   margin: 1rem 0;
 }
 
 .acces-actions button {
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.2rem;
-  margin: 0.4rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
+  width: auto;
+  min-width: 180px;
 }
 
-.acces-actions button:hover {
-  background: #4338ca;
-  transform: translateY(-2px);
+/* ===== MODALES ===== */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
-.acces-actions button:active {
-  transform: scale(0.95);
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Tarjeta de vista previa */
-.acces-card {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-}
-
-.acces-card strong {
-  display: block;
+.modal-content h2 {
   margin-bottom: 1rem;
-  color: #111827;
+  font-size: 1.4rem;
+  color: #222;
 }
 
-/* Modo alto contraste */
-body.alto-contraste {
-  background: #000 !important;
-  color: #fff !important;
+.modal-content input {
+  display: block;
+  width: 90%;
+  margin: 0.6rem auto;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
 
-body.alto-contraste .acces-container {
-  background: #111;
-  color: #fff;
-  border: 2px solid #fff;
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-body.alto-contraste button {
-  background: #facc15 !important;
-  color: #000 !important;
-}
 
-body.alto-contraste .acces-card {
-  background: #222;
-  border: 1px solid #facc15;
-}
