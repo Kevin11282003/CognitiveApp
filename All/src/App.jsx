@@ -13,7 +13,6 @@ import Registro from './Componentes/Registro/Index';
 import Accesibilidad from './Componentes/Accesibilidad/Index';
 import Memoria from './Componentes/Memoria/Index';
 import Palabras from './Componentes/PalabrasEncadenadas/Index';
-import MenuMemoria from './Componentes/MenuMemoria/Index';
 import './App.css';
 
 function App() {

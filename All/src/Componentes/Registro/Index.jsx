@@ -129,8 +129,8 @@ function Registro() {
         <button type="submit">Registrarse</button>
       </form>
       {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-      <h4>Ya tengo cuenta y quiero loguearme</h4>
-      <button onClick={() => navigate(`/login`)}>Login</button>
+      <h4>Ya tengo cuenta y quiero Iniciar sesión</h4>
+      <button onClick={() => navigate(`/login`)}>Iniciar sesión</button>
     </section>
   );
 }

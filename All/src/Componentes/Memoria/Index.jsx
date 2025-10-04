@@ -134,22 +134,6 @@ function EjercicioSecuencias() {
     // Subir a Supabase
     const { error } = await supabase.from("resultados_juegos").insert([partida]);
     if (error) console.error("❌ Error subiendo a Supabase:", error.message);
-
-    // Validar racha diaria
-    const hoyStr = new Date().toISOString().split("T")[0];
-    const { data: juegosHoy } = await supabase
-      .from("resultados_juegos")
-      .select("id")
-      .eq("usuarioid", user.id)
-      .gte("fecha", hoyStr + "T00:00:00")
-      .lte("fecha", hoyStr + "T23:59:59");
-
-    if (!juegosHoy.length) {
-      await supabase
-        .from("usuario")
-        .update({ racha_diaria: supabase.raw("racha_diaria + 1") })
-        .eq("id", user.id);
-    }
   };
 
   const reiniciarJuego = () => {

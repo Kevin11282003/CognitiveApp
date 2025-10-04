@@ -6,10 +6,30 @@ export default function Ejercicios() {
   const navigate = useNavigate();
 
   const categorias = [
-    { icono: "🧩", titulo: "Memoria", desc: "Secuencias, pares, recuerdo diferido" },
-    { icono: "🔎", titulo: "Atención", desc: "Selección, inhibición, tiempo de reacción" },
-    { icono: "🧠", titulo: "Lógica", desc: "Patrones, series, resolución simple" },
-    { icono: "🔤", titulo: "Vocabulario", desc: "Semejanzas, anagramas, definición" },
+    { 
+      icono: "🧩", 
+      titulo: "Memoria", 
+      desc: "Secuencias, pares, recuerdo diferido", 
+      ruta: "/Memoria" 
+    },
+    { 
+      icono: "🔎", 
+      titulo: "Atención", 
+      desc: "Selección, inhibición, tiempo de reacción", 
+      ruta: "/MenuAtencion" 
+    },
+    { 
+      icono: "🧠", 
+      titulo: "Lógica", 
+      desc: "Patrones, series, resolución simple", 
+      ruta: "/MenuLogica" 
+    },
+    { 
+      icono: "🔤", 
+      titulo: "Vocabulario", 
+      desc: "Semejanzas, anagramas, definición", 
+      ruta: "/Palabras" 
+    },
   ];
 
   return (
@@ -29,7 +49,7 @@ export default function Ejercicios() {
             <span className="ico">{cat.icono}</span>
             <h3>{cat.titulo}</h3>
             <p>{cat.desc}</p>
-            <button onClick={() => navigate("/MenuMemoria")}>Iniciar →</button>
+            <button onClick={() => navigate(cat.ruta)}>Iniciar →</button>
           </div>
         ))}
       </div>
