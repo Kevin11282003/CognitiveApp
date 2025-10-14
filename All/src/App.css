@@ -277,6 +277,7 @@ button:hover:not(:disabled) { background-color: #1565c0; }
 
 /*Memoria css*/
 
+
 /* Contenedor principal del ejercicio */
 .ejercicio-container {
   max-width: 800px;
@@ -319,6 +320,8 @@ button:hover:not(:disabled) { background-color: #1565c0; }
   justify-content: center;
   gap: 12px;
   margin: 1rem 0;
+  flex-direction: column;
+  align-items: center;
 }
 
 .inputs-secuencia input {
@@ -1092,3 +1095,181 @@ button {
 }
 
 
+/* Menu por categorias css */
+
+.menu-ejercicios {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  background-color: #fdfdfd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.menu-ejercicios h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.menu-ejercicios h3 {
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+.menu-ejercicios ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-ejercicios li {
+  margin-bottom: 10px;
+}
+
+.menu-ejercicios button {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-align: left;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.menu-ejercicios button:hover {
+  background-color: #e6f0ff;
+  transform: scale(1.02);
+  border-color: #007bff;
+}
+
+
+/* Reproductor css */
+
+.reproductor-ejercicio {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.reproductor-ejercicio h2 {
+  font-size: 26px;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.reproductor-ejercicio p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.reproductor-ejercicio ol {
+  padding-left: 20px;
+  margin-bottom: 30px;
+}
+
+.reproductor-ejercicio li {
+  font-size: 17px;
+  line-height: 1.6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.reproductor-ejercicio li:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.reproductor-ejercicio li:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+
+.reproductor-ejercicio li.bold {
+  font-weight: bold;
+  background-color: #d0ebff !important;
+  border-left: 4px solid #007bff;
+}
+
+.reproductor-ejercicio button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.15s;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  display: block;
+}
+
+.reproductor-ejercicio button:hover {
+  background-color: #0056b3;
+  transform: scale(1.02);
+}
+
+.reproductor-ejercicio button:disabled {
+  background-color: #a0c4ff;
+  cursor: not-allowed;
+}
+
+.reproductor-ejercicio .volver-btn {
+  margin-top: 20px;
+  background-color: #6c757d;
+}
+
+.reproductor-ejercicio .volver-btn:hover {
+  background-color: #5a6268;
+}
+
+.reproductor-ejercicio .mensaje-ejecucion {
+  font-style: italic;
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+}
+
+/* 🔁 RESPONSIVE DESIGN */
+@media (max-width: 600px) {
+  .reproductor-ejercicio {
+    padding: 20px 15px;
+    margin: 20px 10px;
+  }
+
+  .reproductor-ejercicio h2 {
+    font-size: 22px;
+  }
+
+  .reproductor-ejercicio p {
+    font-size: 15px;
+  }
+
+  .reproductor-ejercicio li {
+    font-size: 15px;
+    padding: 6px 10px;
+  }
+
+  .reproductor-ejercicio button {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+}

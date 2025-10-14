@@ -180,18 +180,22 @@ function EjercicioSecuencias() {
             </div>
           ) : (
             <div className="inputs-secuencia">
-              {respuesta.map((num, index) => (
-                <input
-                  key={index}
-                  ref={(el) => (inputsRef.current[index] = el)}
-                  type="text"
-                  maxLength={1}
-                  value={num}
-                  onChange={(e) => handleChange(index, e.target.value)}
-                  onKeyDown={(e) => handleKeyDown(index, e)}
-                />
-              ))}
-              <button onClick={handleVerificar}>Verificar</button>
+              <div className="inputs-container">
+                {respuesta.map((num, index) => (
+                  <input
+                    key={index}
+                    ref={(el) => (inputsRef.current[index] = el)}
+                    type="text"
+                    maxLength={1}
+                    value={num}
+                    onChange={(e) => handleChange(index, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(index, e)}
+                  />
+                ))}
+              </div>
+              <div className="verificar-container">
+                <button onClick={handleVerificar}>Verificar</button>
+              </div>
             </div>
           )}
 

@@ -16,7 +16,7 @@ export default function Ejercicios() {
       icono: "🔎", 
       titulo: "Atención", 
       desc: "Selección, inhibición, tiempo de reacción", 
-      ruta: "/MenuAtencion" 
+      ruta: "/categorias" 
     },
     { 
       icono: "🧠", 
