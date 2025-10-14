@@ -22,7 +22,7 @@ export default function Ejercicios() {
       icono: "🧠", 
       titulo: "Lógica", 
       desc: "Patrones, series, resolución simple", 
-      ruta: "/MenuLogica" 
+      ruta: "/logica" 
     },
     { 
       icono: "🔤", 

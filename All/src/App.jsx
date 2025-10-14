@@ -15,6 +15,7 @@ import Memoria from './Componentes/Memoria/Index';
 import Palabras from './Componentes/PalabrasEncadenadas/Index';
 import EjerFisicos from './Componentes/Reproductor/Index';
 import Categoria from './Componentes/Reproductor/categorias';
+import Logica from './Componentes/Logica/Index';
 import './App.css';
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
   <Route path="/Accesibilidad" element={usuario ? <Accesibilidad /> : <Navigate to="/login" />} />
   <Route path="/reproductor/:id" element={usuario ? <EjerFisicos /> : <Navigate to="/login" />} />
   <Route path="/categorias" element={usuario ? <Categoria /> : <Navigate to="/login" />} />
+  <Route path="/logica" element={usuario ? <Logica /> : <Navigate to="/login" />} />
 </Routes>
 
       </main>
