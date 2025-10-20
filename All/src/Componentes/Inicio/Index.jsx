@@ -48,11 +48,12 @@ export default function Inicio() {
         </div>
 
         <div className="inicio-card">
-          <span className="ico">⚙️</span>
-          <h3>Accesibilidad</h3>
-          <p>Ajusta tamaño de letra, alto contraste y ayudas visuales.</p>
-          <button onClick={() => navigate("/accesibilidad")}>Configurar →</button>
+          <span className="ico">👤</span>
+          <h3>Mi perfil</h3>
+          <p>Consulta o edita tu información personal y datos de la cuenta.</p>
+          <button onClick={() => navigate("/usuario")}>Ir a perfil →</button>
         </div>
+
       </div>
     </div>
   );

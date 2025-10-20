@@ -38,10 +38,10 @@ function MenuEjerciciosPorCategoria() {
   };
 
   return (
-    <div className="menu-ejercicios">
-      <h2>Ejercicios por categoría</h2>
+    <div className="menu-ejercicios-container">
+      <h2 className="menu-ejercicios-titulo">Ejercicios por categoría</h2>
       {categorias.map((cat) => (
-        <div key={cat} style={{ marginBottom: "20px" }}>
+        <div key={cat} className="menu-ejercicios-categoria">
           <h3>{cat}</h3>
           <ul>
             {ejerciciosPorCategoria[cat].map((ej) => (

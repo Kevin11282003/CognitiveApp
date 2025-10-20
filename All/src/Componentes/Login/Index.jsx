@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../../supabase";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
@@ -11,12 +11,16 @@ function Login() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [mode, setMode] = useState("login"); 
-  // "login" | "forgot" | "otp" | "reset"
-
+  const [mode, setMode] = useState("login"); // "login" | "forgot" | "otp" | "reset"
   const [otpVerified, setOtpVerified] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 🔹 NUEVO estado
 
   const navigate = useNavigate();
+
+  // 🔹 Reiniciar visibilidad de contraseña al cambiar de modo
+  useEffect(() => {
+    setShowPassword(false);
+  }, [mode]);
 
   // 🔹 Login normal
   const handleLogin = async (e) => {
@@ -62,7 +66,7 @@ function Login() {
     const { error } = await supabase.auth.verifyOtp({
       email,
       token: otp,
-      type: "magiclink", // puede ser "email" o "magiclink" según config
+      type: "magiclink",
     });
 
     if (error) {
@@ -114,11 +118,19 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showPassword}
+                  onChange={() => setShowPassword(!showPassword)}
+                />
+                Mostrar contraseña
+              </label>
               <button type="submit">Iniciar sesión</button>
             </form>
             <p>
@@ -175,17 +187,25 @@ function Login() {
             <h2>Nueva contraseña</h2>
             <form onSubmit={handleResetPassword}>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Nueva contraseña"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Confirmar contraseña"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showPassword}
+                  onChange={() => setShowPassword(!showPassword)}
+                />
+                Mostrar contraseña
+              </label>
               <button type="submit">Actualizar contraseña</button>
             </form>
           </>

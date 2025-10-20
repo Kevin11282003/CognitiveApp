@@ -139,6 +139,48 @@ main {
 #divisaun button { padding: 12px; border: none; border-radius: 10px; background: #1976d2; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; } 
 #divisaun button:hover { background: #0d47a1; transform: translateY(-2px); } 
 
+
+/*Registro css*/
+/* 🗓️ Contenedor para ícono + input */
+.input-date-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.input-date-container::before {
+  position: absolute;
+  left: 10px;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+/* 📆 Estilo del input de fecha */
+.custom-date-input {
+  width: 100%;
+  padding: 10px 10px 10px 35px; /* espacio para ícono */
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-date-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  background-color: white;
+}
+
+/* Compatibilidad para navegadores que no renderizan bien */
+.custom-date-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.4);
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 /* Estilo moderno y consistente con CognitiveApp */ 
 #registro-container { background-color: #ffffff; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); width: 340px; text-align: center; margin: 3rem auto; font-family: "Segoe UI", sans-serif; } 
 #registro-container h2 { color: #1976d2; font-size: 1.6rem; font-weight: 600; } 
@@ -1097,60 +1139,65 @@ button {
 
 /* Menu por categorias css */
 
-.menu-ejercicios {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  background-color: #fdfdfd;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.menu-ejercicios-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
 }
 
-.menu-ejercicios h2 {
+.menu-ejercicios-titulo {
+font-size: 1.8rem; margin-bottom: 0.5rem; color: #222;
   text-align: center;
-  font-size: 28px;
+}
+
+.menu-ejercicios-categoria {
+  margin-bottom: 2rem;
+  background: #f9f9f9;
+  padding: 1.2rem;
+  border-radius: 12px;
+}
+
+.menu-ejercicios-categoria h3 {
+  margin-bottom: 1rem;
   color: #333;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 10px;
+  font-size: 1.3rem;
 }
 
-.menu-ejercicios h3 {
-  font-size: 20px;
-  color: #555;
-  margin-bottom: 10px;
-  margin-top: 20px;
-  border-left: 4px solid #007bff;
-  padding-left: 10px;
-}
-
-.menu-ejercicios ul {
+.menu-ejercicios-categoria ul {
   list-style: none;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
-.menu-ejercicios li {
-  margin-bottom: 10px;
-}
-
-.menu-ejercicios button {
+.menu-ejercicios-categoria li button {
   width: 100%;
-  padding: 10px 15px;
-  font-size: 16px;
-  text-align: left;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 10px 14px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.menu-ejercicios button:hover {
-  background-color: #e6f0ff;
-  transform: scale(1.02);
-  border-color: #007bff;
+.menu-ejercicios-categoria li button:hover {
+  background: #0d47a1;
+  transform: translateY(-2px);
 }
+
+.menu-ejercicios-categoria li button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.3);
+}
+
 
 
 /* Reproductor css */

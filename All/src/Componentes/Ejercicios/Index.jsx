@@ -9,13 +9,13 @@ export default function Ejercicios() {
     { 
       icono: "🧩", 
       titulo: "Memoria", 
-      desc: "Secuencias, pares, recuerdo diferido", 
+      desc: "Recuerda y repite secuencias numéricas aleatorias para entrenar tu memoria.", 
       ruta: "/Memoria" 
     },
     { 
-      icono: "🔎", 
-      titulo: "Atención", 
-      desc: "Selección, inhibición, tiempo de reacción", 
+      icono: "🤸‍♂️",
+      titulo: "Ejercicios físicos",
+      desc: "Movilidad, flexibilidad y relajación con rutinas sencillas.",
       ruta: "/categorias" 
     },
     { 
@@ -27,7 +27,7 @@ export default function Ejercicios() {
     { 
       icono: "🔤", 
       titulo: "Vocabulario", 
-      desc: "Semejanzas, anagramas, definición", 
+      desc: "Forma cadenas de palabras conectadas por letras para desafiar tu vocabulario.", 
       ruta: "/Palabras" 
     },
   ];

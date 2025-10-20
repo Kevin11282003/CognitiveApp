@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../supabase';
 import { useNavigate } from 'react-router-dom';
 import "../../App.css";
@@ -14,7 +14,12 @@ function Registro() {
   });
 
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false); // 🔹 Nuevo estado
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setShowPassword(false); // Reinicia la visibilidad de contraseñas al cargar
+  }, []);
 
   const handleChange = (e) => {
     setFormulario({ ...formulario, [e.target.name]: e.target.value });
@@ -24,20 +29,17 @@ function Registro() {
     e.preventDefault();
     setError(null);
 
-    // Validar que la contraseña y confirmar coincidan
     if (formulario.password !== formulario.confirmarPassword) {
       setError("❌ Las contraseñas no coinciden.");
       return;
     }
 
-    // Validar fuerza de contraseña
     const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!regexPassword.test(formulario.password)) {
       setError("❌ La contraseña debe tener mínimo 8 caracteres, al menos una letra y un número.");
       return;
     }
 
-    // 1. Crear usuario en Auth
     const { data, error: errorAuth } = await supabase.auth.signUp({
       email: formulario.correo,
       password: formulario.password,
@@ -50,7 +52,6 @@ function Registro() {
 
     const uid = data.user.id;
 
-    // 2. Insertar en tabla "usuario"
     const { error: errorInsert } = await supabase.from("usuario").insert([
       {
         id: uid,
@@ -90,7 +91,7 @@ function Registro() {
           required
         />
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
           placeholder="Contraseña"
           value={formulario.password}
@@ -98,25 +99,35 @@ function Registro() {
           required
         />
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="confirmarPassword"
           placeholder="Confirmar contraseña"
           value={formulario.confirmarPassword}
           onChange={handleChange}
           required
         />
+        <label>
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          Mostrar contraseña
+        </label>
 
-        <h2>
-          Fecha de nacimiento
-        </h2>
-        <input
-          type="date"
-          name="fechaNacimiento"
-          id="fechaNacimiento"
-          value={formulario.fechaNacimiento}
-          onChange={handleChange}
-          required
-        />
+        <h2>Fecha de nacimiento</h2>
+        <div className="input-date-container">
+          <input
+            type="date"
+            name="fechaNacimiento"
+            id="fechaNacimiento"
+            value={formulario.fechaNacimiento}
+            onChange={handleChange}
+            required
+            className="custom-date-input"
+          />
+        </div>
+
 
         <input
           type="text"
