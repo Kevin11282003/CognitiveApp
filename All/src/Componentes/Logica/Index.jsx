@@ -134,7 +134,7 @@ function JuegoLogica() {
     return (
       <InstruccionesModal
         titulo="🧠 Ejercicio de Lógica y Razonamiento"
-        texto="Responde a las preguntas de lógica que se te presenten. El sistema evaluará tu respuesta con IA y te dará retroalimentación hablada para mejorar tu aprendizaje."
+        texto="Responde a las preguntas de lógica que se te presenten. El sistema evaluará tu respuesta con IA y te dará retroalimentación hablada para evaluar tu logica."
         onContinuar={() => setMostrarInstrucciones(false)}
       />
     );
