@@ -21,7 +21,7 @@ export default function Ejercicios() {
     { 
       icono: "🧠", 
       titulo: "Lógica", 
-      desc: "Patrones, series, resolución simple", 
+      desc: "Juego de lógica y razonamiento con evaluación automática de respuestas usando IA",
       ruta: "/logica" 
     },
     { 

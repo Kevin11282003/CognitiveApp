@@ -11,7 +11,7 @@ function Login() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [mode, setMode] = useState("login"); // "login" | "forgot" | "otp" | "reset"
+  const [mode, setMode] = useState("login"); // "login" | "forgot" | "otp" | "reset" 
   const [otpVerified, setOtpVerified] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // 🔹 NUEVO estado
 

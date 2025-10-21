@@ -18,7 +18,7 @@ function Registro() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setShowPassword(false); // Reinicia la visibilidad de contraseñas al cargar
+    setShowPassword(false); // Reinicia la visibilidad de contraseñas al cargar el componente
   }, []);
 
   const handleChange = (e) => {

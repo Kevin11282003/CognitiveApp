@@ -16,7 +16,6 @@ import Palabras from './Componentes/PalabrasEncadenadas/Index';
 import EjerFisicos from './Componentes/Reproductor/Index';
 import Categoria from './Componentes/Reproductor/categorias';
 import Logica from './Componentes/Logica/Index';
-import TestGemini from "./Componentes/test.jsx";
 import './App.css';
 
 function App() {
@@ -58,7 +57,6 @@ function App() {
   <Route path="/reproductor/:id" element={usuario ? <EjerFisicos /> : <Navigate to="/login" />} />
   <Route path="/categorias" element={usuario ? <Categoria /> : <Navigate to="/login" />} />
   <Route path="/logica" element={usuario ? <Logica /> : <Navigate to="/login" />} />
-  <Route path="/Test" element={usuario ? <TestGemini /> : <Navigate to="/login" />} />
 </Routes>
 
       </main>

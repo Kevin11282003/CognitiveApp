@@ -230,7 +230,7 @@ function ReproductorEjercicio() {
                 boxShadow: "0 4px 8px rgba(0,0,0,0.15)",
                 minWidth: "200px",
               }}
-              aria-label="Detener ejercicio"
+              aria-label="Detener ejercicio guiado"
             >
               ⏹ Detener ejercicio
             </button>
