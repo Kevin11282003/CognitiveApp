@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // ⚠️ INSEGURA PARA PRODUCCIÓN: Usa esto solo para pruebas
-const API_KEY = "API_KEY_AQUI"; // ← Reemplaza esto con tu clave de Gemini
+const API_KEY = "API_KEY_AQUI XD"; // ← Reemplaza esto con tu clave de Gemini
 
 function JuegoLogica() {
   const [preguntas, setPreguntas] = useState([]);
