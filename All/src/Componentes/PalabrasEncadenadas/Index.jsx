@@ -2,18 +2,20 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase";
 import "../../App.css";
+import InstruccionesModal from "../Descripcion/Index"; // Importa el modal
 
 function EjercicioPalabrasEncadenadas() {
   const [palabras, setPalabras] = useState([]);
   const [entrada, setEntrada] = useState("");
   const [mensaje, setMensaje] = useState(null);
-  const [tiempo, setTiempo] = useState(10);
+  const [tiempo, setTiempo] = useState (20);
   const [perdio, setPerdio] = useState(false);
   const [puntaje, setPuntaje] = useState(0);
   const [lastScore, setLastScore] = useState(0);
   const [showScoreMessage, setShowScoreMessage] = useState(false);
   const [ultimaPalabraGenerada, setUltimaPalabraGenerada] = useState("");
   const [partidaFinalizada, setPartidaFinalizada] = useState(false);
+  const [mostrarInstrucciones, setMostrarInstrucciones] = useState(true); // Estado para mostrar instrucciones
 
   const navigate = useNavigate();
   const timerRef = useRef(null);
@@ -21,6 +23,7 @@ function EjercicioPalabrasEncadenadas() {
   const normalizar = (str) =>
     str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
+  // fetchPalabraInicial ahora no se llama en useEffect, sino cuando se oculta el modal (al continuar)
   const fetchPalabraInicial = async () => {
     try {
       const res = await fetch("https://rae-api.com/api/random");
@@ -37,6 +40,11 @@ function EjercicioPalabrasEncadenadas() {
     }
   };
 
+  // Quitar este useEffect que se ejecutaba al cargar el componente:
+  // useEffect(() => {
+  //   fetchPalabraInicial();
+  // }, []);
+
   const verificarPalabraDiccionario = async (palabra) => {
     try {
       const res = await fetch(
@@ -50,10 +58,6 @@ function EjercicioPalabrasEncadenadas() {
     }
   };
 
-  useEffect(() => {
-    fetchPalabraInicial();
-  }, []);
-
   const ultimaPalabra = palabras[palabras.length - 1] || "";
   const obtenerUltimaSilaba = (palabra) => {
     if (palabra.length <= 2) return normalizar(palabra);
@@ -62,8 +66,8 @@ function EjercicioPalabrasEncadenadas() {
   const ultimaSilaba = obtenerUltimaSilaba(ultimaPalabra);
 
   useEffect(() => {
-    if (!ultimaPalabra || partidaFinalizada) return;
-    setTiempo(10);
+    if (!ultimaPalabra || partidaFinalizada || mostrarInstrucciones) return; // NO iniciar temporizador si modal visible
+    setTiempo(20);
     if (timerRef.current) clearInterval(timerRef.current);
 
     timerRef.current = setInterval(() => {
@@ -80,10 +84,10 @@ function EjercicioPalabrasEncadenadas() {
     }, 1000);
 
     return () => clearInterval(timerRef.current);
-  }, [palabras, partidaFinalizada]);
+  }, [palabras, partidaFinalizada, mostrarInstrucciones]);
 
   const handleVerificar = async () => {
-    if (partidaFinalizada) return; // no dejar seguir jugando
+    if (partidaFinalizada || mostrarInstrucciones) return; // no dejar seguir jugando si modal visible
 
     const palabraIngresada = entrada.trim();
     const palabraNormalizada = normalizar(palabraIngresada);
@@ -131,7 +135,9 @@ function EjercicioPalabrasEncadenadas() {
     setPartidaFinalizada(true); // bloquear futuras acciones
 
     // usuario autenticado
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) {
       console.error("No hay usuario autenticado");
       return;
@@ -164,75 +170,92 @@ function EjercicioPalabrasEncadenadas() {
     await fetchPalabraInicial();
   };
 
+  // Función para ocultar instrucciones y empezar juego
+  const handleContinuar = () => {
+    setMostrarInstrucciones(false);
+    fetchPalabraInicial();
+  };
+
   return (
     <div className="ejercicio-container">
-      <h2>✍️ Palabras Encadenadas</h2>
-      <p>
-        Escribe una palabra que empiece con la última sílaba resaltada de la palabra anterior.
-      </p>
-
-      {ultimaPalabra && (
-        <h3>
-          {ultimaPalabra.slice(0, -2)}
-          <span style={{ color: "red", fontWeight: "bold" }}>
-            {ultimaPalabra.slice(-2)}
-          </span>
-        </h3>
+      {mostrarInstrucciones && (
+        <InstruccionesModal
+          titulo="✍️ Palabras Encadenadas"
+          texto="Debes escribir una palabra que comience con las dos últimas letras de la palabra anterior. Tienes 20 segundos para ingresar cada palabra. ¡Buena suerte!"
+          onContinuar={handleContinuar}
+        />
       )}
 
-      {!perdio ? (
-        <div className="input-container">
-          <input
-            type="text"
-            value={entrada}
-            onChange={(e) => setEntrada(e.target.value)}
-            placeholder={`Debe empezar con "${ultimaSilaba}"`}
-          />
-          <button onClick={handleVerificar}>Ingresar</button>
-        </div>
-      ) : (
-        <div className="resultado-actions" style={{ marginTop: "15px" }}>
-          <button onClick={handleReiniciar}>🔄 Reintentar</button>
-          <button onClick={() => navigate("/Ejercicios")}>🏠 Menú</button>
-        </div>
+      {!mostrarInstrucciones && (
+        <>
+          <h2>✍️ Palabras Encadenadas</h2>
+          <p>
+            Escribe una palabra que empiece con la última sílaba resaltada de
+            la palabra anterior.
+          </p>
+
+          {ultimaPalabra && (
+            <h3>
+              {ultimaPalabra.slice(0, -2)}
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                {ultimaPalabra.slice(-2)}
+              </span>
+            </h3>
+          )}
+
+          {!perdio ? (
+            <div className="input-container">
+              <input
+                type="text"
+                value={entrada}
+                onChange={(e) => setEntrada(e.target.value)}
+                placeholder={`Debe empezar con "${ultimaSilaba}"`}
+              />
+              <button onClick={handleVerificar}>Ingresar</button>
+            </div>
+          ) : (
+            <div className="resultado-actions" style={{ marginTop: "15px" }}>
+              <button onClick={handleReiniciar}>🔄 Reintentar</button>
+              <button onClick={() => navigate("/Ejercicios")}>🏠 Menú</button>
+            </div>
+          )}
+
+          {!perdio && (
+            <p style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}>
+              ⏳ Tiempo restante: {tiempo} segundos
+            </p>
+          )}
+
+          <p style={{ marginTop: "10px", fontWeight: "bold" }}>🏆 Puntaje: {puntaje}</p>
+
+          {mensaje && (
+            <div
+              style={{
+                marginTop: "15px",
+                padding: "10px",
+                borderRadius: "8px",
+                background: mensaje.includes("✅")
+                  ? "#4caf50"
+                  : mensaje.includes("⚠️")
+                  ? "#ff9800"
+                  : "#f44336",
+                color: "white",
+              }}
+            >
+              {mensaje}
+            </div>
+          )}
+
+          {showScoreMessage && <div className="puntaje-popup">+{lastScore} ✅</div>}
+
+          <h4>Lista de palabras:</h4>
+          <ul>
+            {palabras.map((p, i) => (
+              <li key={i}>{p}</li>
+            ))}
+          </ul>
+        </>
       )}
-
-      {!perdio && (
-        <p style={{ fontSize: "18px", fontWeight: "bold", marginTop: "10px" }}>
-          ⏳ Tiempo restante: {tiempo} segundos
-        </p>
-      )}
-
-      <p style={{ marginTop: "10px", fontWeight: "bold" }}>
-        🏆 Puntaje: {puntaje}
-      </p>
-
-      {mensaje && (
-        <div
-          style={{
-            marginTop: "15px",
-            padding: "10px",
-            borderRadius: "8px",
-            background: mensaje.includes("✅")
-              ? "#4caf50"
-              : mensaje.includes("⚠️")
-              ? "#ff9800"
-              : "#f44336",
-            color: "white",
-          }}
-        >
-          {mensaje}
-        </div>
-      )}
-
-      {showScoreMessage && <div className="puntaje-popup">+{lastScore} ✅</div>}
-
-      <h4>Lista de palabras:</h4>
-      <ul>
-        {palabras.map((p, i) => (
-          <li key={i}>{p}</li>
-        ))}
-      </ul>
     </div>
   );
 }

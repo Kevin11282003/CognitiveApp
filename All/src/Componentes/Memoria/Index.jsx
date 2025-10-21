@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase";
+import InstruccionesModal from "../Descripcion/Index";
 import "../../App.css";
 
 function EjercicioSecuencias() {
@@ -8,7 +9,7 @@ function EjercicioSecuencias() {
   const [respuesta, setRespuesta] = useState([]);
   const [nivel, setNivel] = useState(3);
   const [mensaje, setMensaje] = useState(null);
-  const [mostrarSecuencia, setMostrarSecuencia] = useState(true);
+  const [mostrarSecuencia, setMostrarSecuencia] = useState(false);
   const [aciertosSeguidos, setAciertosSeguidos] = useState(0);
 
   const [error, setError] = useState(false);
@@ -31,11 +32,22 @@ function EjercicioSecuencias() {
   const audioExito = new Audio("/sounds/exito.mp3");
   const audioError = new Audio("/sounds/error.mp3");
 
-  // Generar nueva secuencia
-  useEffect(() => {
-    generarSecuencia();
-  }, [nivel]);
+  const [mostrarInstrucciones, setMostrarInstrucciones] = useState(true);
+  const [juegoIniciado, setJuegoIniciado] = useState(false); // Nuevo estado para controlar inicio del juego
 
+  // Quitar efecto que genera secuencia automáticamente
+  // useEffect(() => {
+  //   if (juegoIniciado) generarSecuencia();
+  // }, [nivel, juegoIniciado]);
+
+  // Función para iniciar el juego al presionar continuar
+  const iniciarJuego = () => {
+    setMostrarInstrucciones(false);
+    setJuegoIniciado(true);
+    generarSecuencia();
+  };
+
+  // Generar nueva secuencia
   const generarSecuencia = () => {
     const nuevaSecuencia = Array.from({ length: nivel }, () =>
       Math.floor(Math.random() * 9) + 1
@@ -46,7 +58,7 @@ function EjercicioSecuencias() {
     setError(false);
 
     // Guardamos localmente la secuencia generada
-    setHistorialSecuencias(prev => [...prev, nuevaSecuencia]);
+    setHistorialSecuencias((prev) => [...prev, nuevaSecuencia]);
 
     setTimeout(() => {
       setMostrarSecuencia(false);
@@ -71,6 +83,8 @@ function EjercicioSecuencias() {
   };
 
   const handleVerificar = async () => {
+    if (!juegoIniciado) return; // seguridad, no verificar si no empezó el juego
+
     const tiempoRonda = tiempoInicio ? (Date.now() - tiempoInicio) / 1000 : 0;
 
     if (respuesta.join("") === secuencia.join("")) {
@@ -93,6 +107,7 @@ function EjercicioSecuencias() {
         setNivel(nivel + 1);
         setAciertosSeguidos(0);
         setMensaje(null);
+        generarSecuencia(); // Generar nueva secuencia con nuevo nivel
       } else {
         setMensaje(null);
         generarSecuencia();
@@ -109,7 +124,9 @@ function EjercicioSecuencias() {
   };
 
   const guardarEnRanking = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) return console.error("No hay usuario autenticado");
 
     // Tomamos la última secuencia generada como la secuencia fallida
@@ -145,6 +162,7 @@ function EjercicioSecuencias() {
     setMensaje(null);
     setMostrarPuntaje(false);
     setHistorialSecuencias([]);
+    setJuegoIniciado(true);
     generarSecuencia();
   };
 
@@ -156,73 +174,99 @@ function EjercicioSecuencias() {
   const handleMenu = () => navigate("/Ejercicios");
 
   return (
-    <div className="ejercicio-container">
-      <h2>🧠 Ejercicio de Secuencias</h2>
+    <>
+      {mostrarInstrucciones && (
+        <InstruccionesModal
+          titulo="🧠 Ejercicio de Secuencias"
+          texto={`Bienvenido al ejercicio de secuencias. 
+            Debes memorizar una secuencia de números que aparecerá brevemente en pantalla. 
+            Después, deberás escribirla en el mismo orden. 
+            Cada vez que aciertes tres rondas seguidas, el nivel aumentará y la secuencia será más larga. 
+            Presiona continuar para comenzar.`}
+          onContinuar={iniciarJuego} // Aquí iniciamos el juego
+        />
+      )}
 
-      {mostrarPuntaje ? (
-        <div className="resultado-card">
-          <h3>📊 Resultados</h3>
-          <p>✅ Rondas correctas: <strong>{rondasCorrectas}</strong></p>
-          <p>⏱️ Tiempo total: <strong>{tiempoTotal.toFixed(1)}s</strong></p>
-          <p>⭐ Puntaje total: <strong>{puntaje}</strong></p>
-          <div className="resultado-actions">
-            <button onClick={continuar}>🔄 Reintentar</button>
-            <button onClick={handleMenu}>🏠 Volver al Menú</button>
-          </div>
-        </div>
-      ) : (
-        <>
-          <p>Memoriza la secuencia y repítela en orden.</p>
+      {!mostrarInstrucciones && (
+        <div className="ejercicio-container">
+          <h2>🧠 Ejercicio de Secuencias</h2>
 
-          {mostrarSecuencia ? (
-            <div className="secuencia">
-              <h3>{secuencia.join(" ")}</h3>
+          {mostrarPuntaje ? (
+            <div className="resultado-card">
+              <h3>📊 Resultados</h3>
+              <p>
+                ✅ Rondas correctas: <strong>{rondasCorrectas}</strong>
+              </p>
+              <p>
+                ⏱️ Tiempo total: <strong>{tiempoTotal.toFixed(1)}s</strong>
+              </p>
+              <p>
+                ⭐ Puntaje total: <strong>{puntaje}</strong>
+              </p>
+              <div className="resultado-actions">
+                <button onClick={continuar}>🔄 Reintentar</button>
+                <button onClick={handleMenu}>🏠 Volver al Menú</button>
+              </div>
             </div>
           ) : (
-            <div className="inputs-secuencia">
-              <div className="inputs-container">
-                {respuesta.map((num, index) => (
-                  <input
-                    key={index}
-                    ref={(el) => (inputsRef.current[index] = el)}
-                    type="text"
-                    maxLength={1}
-                    value={num}
-                    onChange={(e) => handleChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                  />
-                ))}
-              </div>
-              <div className="verificar-container">
-                <button onClick={handleVerificar}>Verificar</button>
-              </div>
-            </div>
+            <>
+              <p>Memoriza la secuencia y repítela en orden.</p>
+
+              {mostrarSecuencia ? (
+                <div className="secuencia">
+                  <h3>{secuencia.join(" ")}</h3>
+                </div>
+              ) : (
+                <div className="inputs-secuencia">
+                  <div className="inputs-container">
+                    {respuesta.map((num, index) => (
+                      <input
+                        key={index}
+                        ref={(el) => (inputsRef.current[index] = el)}
+                        type="text"
+                        maxLength={1}
+                        value={num}
+                        onChange={(e) => handleChange(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(index, e)}
+                      />
+                    ))}
+                  </div>
+                  <div className="verificar-container">
+                    <button onClick={handleVerificar}>Verificar</button>
+                  </div>
+                </div>
+              )}
+
+              {mensaje && (
+                <div
+                  style={{
+                    background: mensaje.includes("✅") ? "#4caf50" : "#f44336",
+                    color: "white",
+                    padding: "10px",
+                    marginTop: "15px",
+                    borderRadius: "8px",
+                  }}
+                >
+                  {mensaje}
+                </div>
+              )}
+
+              <p>
+                <strong>Nivel actual:</strong> {nivel}
+              </p>
+              <p>
+                <strong>Progreso:</strong> {aciertosSeguidos}/3 aciertos para subir de nivel
+              </p>
+              <p>
+                ⭐ <strong>Puntaje:</strong> {puntaje}
+              </p>
+            </>
           )}
 
-          {mensaje && (
-            <div
-              style={{
-                background: mensaje.includes("✅") ? "#4caf50" : "#f44336",
-                color: "white",
-                padding: "10px",
-                marginTop: "15px",
-                borderRadius: "8px",
-              }}
-            >
-              {mensaje}
-            </div>
-          )}
-
-          <p><strong>Nivel actual:</strong> {nivel}</p>
-          <p><strong>Progreso:</strong> {aciertosSeguidos}/3 aciertos para subir de nivel</p>
-          <p>⭐ <strong>Puntaje:</strong> {puntaje}</p>
-        </>
+          {showScoreMessage && <div className="puntaje-popup">+{lastScore} ✅</div>}
+        </div>
       )}
-
-      {showScoreMessage && (
-        <div className="puntaje-popup">+{lastScore} ✅</div>
-      )}
-    </div>
+    </>
   );
 }
 
