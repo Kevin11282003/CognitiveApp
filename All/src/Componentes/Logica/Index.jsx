@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // ⚠️ INSEGURA PARA PRODUCCIÓN: Usa esto solo para pruebas
-const API_KEY = "API2"; // ← Reemplaza esto con tu clave de Gemini
+const API_KEY = "API_KEY_AQUI"; // ← Reemplaza esto con tu clave de Gemini
 
 function JuegoLogica() {
   const [preguntas, setPreguntas] = useState([]);
@@ -15,76 +15,93 @@ function JuegoLogica() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function cargarPreguntas() {
-      const { data, error } = await supabase
-        .from("ejercicios_logica")
-        .select("*");
+useEffect(() => {
+  async function cargarPreguntas() {
+    const { data, error } = await supabase
+      .from("ejercicios_logica")
+      .select("*");
 
-      if (error) {
-        console.error("Error cargando preguntas:", error.message);
-      } else {
-        setPreguntas(data);
-        if (data.length > 0) {
-          setPreguntaActual(data[Math.floor(Math.random() * data.length)]);
-        }
+    if (error) {
+      console.error("Error cargando preguntas:", error.message);
+    } else {
+      setPreguntas(data);
+      if (data.length > 0) {
+        setPreguntaActual(data[Math.floor(Math.random() * data.length)]);
       }
     }
+  }
 
-    cargarPreguntas();
-  }, []);
+  cargarPreguntas();
+}, []);
+
 
   async function enviarRespuesta() {
-    if (!respuestaUsuario.trim()) return alert("Por favor ingresa una respuesta.");
-    if (!API_KEY || API_KEY === "TU_API_KEY_AQUI") {
-      setError("Por favor, reemplaza TU_API_KEY_AQUI con tu clave real de Gemini.");
-      return;
-    }
+  if (!respuestaUsuario.trim()) return alert("Por favor ingresa una respuesta.");
+  if (!API_KEY || API_KEY === "TU_API_KEY_AQUI") {
+    setError("Por favor, reemplaza TU_API_KEY_AQUI con tu clave real de Gemini.");
+    return;
+  }
 
-    setEnviando(true);
-    setRetroalimentacion(null);
-    setError(null);
+  setEnviando(true);
+  setRetroalimentacion(null);
+  setError(null);
 
-    const prompt = `
+  const prompt = `
 Eres un asistente que evalúa respuestas a preguntas de lógica y razonamiento.
 Pregunta: "${preguntaActual.pregunta}"
 Respuesta del usuario: "${respuestaUsuario}"
 ¿La respuesta es correcta? Da una retroalimentación breve y clara en español.
-    `;
+  `;
 
-    try {
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+try {
+  const genAI = new GoogleGenerativeAI(API_KEY);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = await response.text();
+  const result = await model.generateContent({
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: prompt }],
+      },
+    ],
+  });
 
-      setRetroalimentacion(text);
+  const text = result.response.text(); // ✅ usa el método directo, más estable
+  setRetroalimentacion(text);
 
-      const { data: userData, error: errUser } = await supabase.auth.getUser();
-      if (!errUser && userData?.user) {
-        await supabase.from("resultados_juegos").insert([
-          {
-            usuarioid: userData.user.id,
-            juego: "JuegoLogica",
-            puntaje: 1,
-            nivel_fallido: 0,
-            rondas_correctas: 0,
-            tiempo_total: 0,
-            ejercicio_fallido: null,
-            respuesta_usuario: respuestaUsuario,
-            retroalimentacion_ia: text,
-          },
-        ]);
-      }
-    } catch (err) {
-      console.error("Error al comunicarse con Gemini:", err);
-      setError("Hubo un problema al generar texto con Gemini.");
-    } finally {
-      setEnviando(false);
+
+    const { data: userData, error: errUser } = await supabase.auth.getUser();
+    if (!errUser && userData?.user) {
+      await supabase.from("resultados_juegos").insert([
+        {
+          usuarioid: userData.user.id,
+          juego: "JuegoLogica",
+          puntaje: 1,
+          nivel_fallido: 0,
+          rondas_correctas: 0,
+          tiempo_total: 0,
+          ejercicio_fallido: null,
+          respuesta_usuario: respuestaUsuario,
+          retroalimentacion_ia: text,
+        },
+      ]);
     }
+  } catch (err) {
+    console.error("Error al comunicarse con Gemini:", err);
+    setError("Hubo un problema al generar texto con Gemini.");
+
+    const { GoogleGenerativeAI } = await import("@google/generative-ai");
+const genAI = new GoogleGenerativeAI("TU_API_KEY");
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const result = await model.generateContent("Hola");
+console.log(result.response.text());
+
+  } finally {
+    setEnviando(false);
   }
+}
+
+
 
   function nuevaPregunta() {
     if (preguntas.length === 0) return;
