@@ -34,10 +34,6 @@ export default function Ejercicios() {
 
   return (
     <div className="ejercicios-container">
-      <div className="ejercicios-actions">
-        <button onClick={() => navigate(-1)}>← Volver</button>
-      </div>
-
       <h2 className="ejercicios-titulo">Módulos de ejercicios</h2>
       <p className="ejercicios-subtitulo">
         Selecciona una categoría para comenzar. La dificultad se adapta a tu desempeño.

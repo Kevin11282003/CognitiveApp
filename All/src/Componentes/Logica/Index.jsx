@@ -36,30 +36,30 @@ function JuegoLogica() {
     }
   }, [mostrarInstrucciones]);
 
-  // Función para leer texto con síntesis de voz
+  // ✅ Función para leer texto con voz
   const leerTexto = (texto) => {
-    if (!("speechSynthesis" in window)) return; // No soportado
-
-    window.speechSynthesis.cancel(); // Cancelar cualquier lectura anterior
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(texto);
     utterance.lang = "es-ES";
     window.speechSynthesis.speak(utterance);
   };
 
-  // Leer pregunta actual cuando cambia
+  // Leer la pregunta actual
   useEffect(() => {
     if (preguntaActual && !mostrarInstrucciones) {
       leerTexto(`Pregunta: ${preguntaActual.pregunta}`);
     }
   }, [preguntaActual, mostrarInstrucciones]);
 
-  // Leer retroalimentacion cuando cambia
+  // Leer retroalimentación
   useEffect(() => {
     if (retroalimentacion) {
       leerTexto(`Retroalimentación: ${retroalimentacion}`);
     }
   }, [retroalimentacion]);
 
+  // ✅ Enviar respuesta y guardar en resultados_juegos
   async function enviarRespuesta() {
     if (!respuestaUsuario.trim()) return alert("Por favor ingresa una respuesta.");
     if (!API_KEY || API_KEY === "TU_API_KEY_AQUI") {
@@ -94,8 +94,11 @@ function JuegoLogica() {
       const text = result.response.text();
       setRetroalimentacion(text);
 
+      // 🔹 Obtener usuario autenticado
       const { data: userData, error: errUser } = await supabase.auth.getUser();
+
       if (!errUser && userData?.user) {
+        // 🔹 Insertar resultado incluyendo ejerciciologica_id
         await supabase.from("resultados_juegos").insert([
           {
             usuarioid: userData.user.id,
@@ -107,6 +110,7 @@ function JuegoLogica() {
             ejercicio_fallido: null,
             respuesta_usuario: respuestaUsuario,
             retroalimentacion_ia: text,
+            ejerciciologica_id: preguntaActual.id, // ✅ Se guarda el id de la pregunta actual
           },
         ]);
       }
@@ -134,7 +138,7 @@ function JuegoLogica() {
     return (
       <InstruccionesModal
         titulo="🧠 Ejercicio de Lógica y Razonamiento"
-        texto="Responde a las preguntas de lógica que se te presenten. El sistema evaluará tu respuesta con IA y te dará retroalimentación hablada para evaluar tu logica."
+        texto="Responde a las preguntas de lógica que se te presenten. El sistema evaluará tu respuesta con IA y te dará retroalimentación hablada para evaluar tu lógica."
         onContinuar={() => setMostrarInstrucciones(false)}
       />
     );

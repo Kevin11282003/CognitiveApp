@@ -102,22 +102,23 @@ export default function Usuario() {
         </div>
       </div>
 
-      <div className="datos">
-        <h2>{usuario.nombre}</h2>
-        <p><strong>Correo:</strong> {usuario.correo}</p>
-        <p><strong>Fecha de nacimiento:</strong> {usuario.fecha_nacimiento}</p>
-        <p><strong>Teléfono:</strong> {usuario.telefono}</p>
+<div className="datos">
+  <h2>{usuario.nombre}</h2>
+  <p><strong>Correo:</strong> {usuario.correo}</p>
+  <p><strong>Fecha de nacimiento:</strong> {usuario.fecha_nacimiento}</p>
+  <p><strong>Teléfono:</strong> {usuario.telefono}</p>
+  <p><strong>Cédula:</strong> {usuario.cedula}</p> {/* 👈 agregado, solo lectura */}
 
-        <button className="btn-editar" onClick={() => setModalEditar(true)}>
-          ✏️ Editar datos
-        </button>
-        <button className="btn-password" onClick={() => setModalPassword(true)}>
-          🔑 Cambiar contraseña
-        </button>
-        <button className="btn-logout" onClick={handleLogout}>
-          🚪 Cerrar sesión
-        </button>
-      </div>
+  <button className="btn-editar" onClick={() => setModalEditar(true)}>
+    ✏️ Editar datos
+  </button>
+  <button className="btn-password" onClick={() => setModalPassword(true)}>
+    🔑 Cambiar contraseña
+  </button>
+  <button className="btn-logout" onClick={handleLogout}>
+    🚪 Cerrar sesión
+  </button>
+</div>
 
       {/* ===== MODAL EDITAR DATOS ===== */}
       {modalEditar && (
