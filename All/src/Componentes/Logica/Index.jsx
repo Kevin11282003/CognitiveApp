@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import InstruccionesModal from "../Descripcion/Index"; // Ajusta la ruta si es necesario
 
-const API_KEY = "AIzaSyD8X3RAGJdbbe6PU3v__5SL3ciSG3NANMY";
-
 function JuegoLogica() {
   const [preguntas, setPreguntas] = useState([]);
   const [preguntaActual, setPreguntaActual] = useState(null);
@@ -14,10 +12,29 @@ function JuegoLogica() {
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState(null);
   const [mostrarInstrucciones, setMostrarInstrucciones] = useState(true);
+  const [API_KEY, setApiKey] = useState("");
+
 
   const navigate = useNavigate();
 
   useEffect(() => {
+
+      async function obtenerApiKey() {
+    const { data, error } = await supabase
+      .from("api_key")
+      .select("key")
+      .limit(1)
+      .single();
+
+    if (error) {
+      console.error("Error al obtener API_KEY:", error.message);
+    } else {
+      setApiKey(data.key);
+    }
+  }
+
+  obtenerApiKey();
+  
     async function cargarPreguntas() {
       const { data, error } = await supabase.from("ejercicios_logica").select("*");
 
@@ -62,8 +79,8 @@ function JuegoLogica() {
   // ✅ Enviar respuesta y guardar en resultados_juegos
   async function enviarRespuesta() {
     if (!respuestaUsuario.trim()) return alert("Por favor ingresa una respuesta.");
-    if (!API_KEY || API_KEY === "TU_API_KEY_AQUI") {
-      setError("Por favor, reemplaza TU_API_KEY_AQUI con tu clave real de Gemini.");
+    if (!API_KEY) {
+      setError("No se pudo cargar la API_KEY desde la base de datos.");
       return;
     }
 

@@ -4,9 +4,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { jsPDF } from "jspdf";
 import "../../App.css";
 
-const API_KEY = "AIzaSyD8X3RAGJdbbe6PU3v__5SL3ciSG3NANMY";
-
-
 export default function Progreso({ usuarioId }) {
   const [cargando, setCargando] = useState(true);
   const [racha, setRacha] = useState(0);
@@ -18,6 +15,7 @@ export default function Progreso({ usuarioId }) {
   const [ejerciciosMap, setEjerciciosMap] = useState({});
   const [ejerciciosLogicaMap, setEjerciciosLogicaMap] = useState({});
   const [generandoPDF, setGenerandoPDF] = useState(false);
+  const [API_KEY, setApiKey] = useState("");
 
 
   const coloresJuegos = {
@@ -30,6 +28,23 @@ export default function Progreso({ usuarioId }) {
   };
 
   useEffect(() => {
+
+          async function obtenerApiKey() {
+        const { data, error } = await supabase
+          .from("api_key")
+          .select("key")
+          .limit(1)
+          .single();
+    
+        if (error) {
+          console.error("Error al obtener API_KEY:", error.message);
+        } else {
+          setApiKey(data.key);
+        }
+      }
+    
+      obtenerApiKey();
+      
     if (usuarioId) cargarDatos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usuarioId]);
