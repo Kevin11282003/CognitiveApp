@@ -1,4 +1,33 @@
 /* Menú inferior fijo */
+
+
+.icon {
+  font-size: 22px;
+}
+
+/* 🔹 Botón flotante de inicio */
+.btn-flotante {
+  position: fixed;
+  bottom: 80px; /* un poco arriba del menú */
+  right: 20px;
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  z-index: 10000; /* 👈 más alto que el menú */
+}
+
+.btn-flotante:hover {
+  background-color: #005fa3;
+  transform: scale(1.1);
+}
+
 .menu {
   position: fixed;
   bottom: 0;
@@ -44,7 +73,7 @@ main {
 
 
 .bottom-nav {
-  position: fixed;
+  position: fixed; 
   bottom: 0;
   width: 100%;
   background-color: #ffffff;
@@ -129,6 +158,8 @@ main {
 .inicio-card p { font-size: 0.95rem; color: #666; margin-bottom: 1rem; } 
 .inicio-card button { padding: 8px 14px; border: none; border-radius: 8px; background: #1976d2; color: white; cursor: pointer; transition: background 0.3s; } 
 .inicio-card button:hover { background: #0d47a1; } 
+
+
 
 /* Estilo moderno y consistente con la CognitiveApp */ 
 #divisaun { background-color: #ffffff; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1); width: 320px; margin: auto; text-align: center; font-family: "Segoe UI", sans-serif; } 
@@ -291,6 +322,30 @@ button:hover:not(:disabled) { background-color: #1565c0; }
   background-color: #222 !important;
   color: #fff !important;
 }
+
+/* 🔹 Estilo del botón flotante */
+.btn-flotante {
+  position: fixed;
+  bottom: 80px; /* un poco encima del menú */
+  right: 20px;
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.btn-flotante:hover {
+  background-color: #005fa3;
+  transform: scale(1.1);
+}
+
 
 /* Ajustes para listas/imágenes */
 .alto-contraste .lista-imagenes li {
@@ -1538,4 +1593,401 @@ body.alto-contraste .modal button {
 
 body.alto-contraste .modal-overlay {
   background: rgba(255, 255, 255, 0.15) !important;
+}
+
+
+/* CRUD de ejercicios css */
+
+.crud-ejercicios-container {
+  padding: 20px;
+  max-width: 850px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.crud-ejercicios-container h2 {
+  color: #1976d2;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.crud-form {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.crud-form input,
+.crud-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.crud-form input:focus,
+.crud-form select:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 6px rgba(25, 118, 210, 0.3);
+  outline: none;
+}
+
+/* 🦶 Pasos del ejercicio */
+.crud-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #eef6fc;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border-left: 4px solid #1976d2;
+  position: relative;
+}
+
+.crud-step span {
+  color: #0d47a1;
+  font-weight: 600;
+  min-width: 70px;
+}
+
+.crud-step input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+/* Botón de eliminar paso */
+.delete-step-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  right: 8px;
+  transition: background 0.2s;
+}
+
+.delete-step-btn:hover {
+  background: #c0392b;
+}
+
+.add-step-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px 0 15px;
+  transition: background 0.3s;
+}
+
+.add-step-btn:hover {
+  background: #0d47a1;
+}
+
+.crud-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.primary-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.primary-btn:hover {
+  background: #0d47a1;
+}
+
+.cancel-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.cancel-btn:hover {
+  background: #5a6268;
+}
+
+/* 📋 Lista */
+.crud-lista {
+  list-style: none;
+  padding: 0;
+}
+
+.crud-item {
+  background: #f1f1f1;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.crud-item-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .crud-step {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .delete-step-btn {
+    position: static;
+    align-self: flex-end;
+    width: 26px;
+    height: 26px;
+  }
+
+  .crud-actions {
+    flex-direction: column;
+  }
+}
+
+
+
+/* CRUD Logica css */
+
+/* 🎨 CRUD Lógica - Estilos aislados */
+.crud-logica-container {
+  padding: 20px;
+  max-width: 850px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.crud-logica-titulo {
+  color: #1976d2;
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.crud-logica-formulario {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.crud-logica-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.crud-logica-input:focus {
+  border-color: #1976d2;
+  outline: none;
+  box-shadow: 0 0 6px rgba(25, 118, 210, 0.3);
+}
+
+.crud-logica-boton-agregar {
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.crud-logica-boton-agregar:hover {
+  background: #0d47a1;
+  transform: scale(1.03);
+}
+
+/* 🧩 Lista de preguntas */
+.crud-logica-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.crud-logica-item {
+  background: #f5f7fa;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.crud-logica-item:nth-child(even) {
+  background: #eef6fc;
+}
+
+.crud-logica-item:hover {
+  background: #e3f2fd;
+}
+
+.crud-logica-item-contenido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.crud-logica-pregunta {
+  flex: 1;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* 🧠 Botones */
+.crud-logica-botones {
+  display: flex;
+  gap: 8px;
+}
+
+.crud-logica-boton-editar,
+.crud-logica-boton-eliminar,
+.crud-logica-boton-guardar {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: white;
+  transition: background 0.25s, transform 0.1s;
+}
+
+.crud-logica-boton-editar {
+  background: #1976d2;
+}
+
+.crud-logica-boton-editar:hover {
+  background: #0d47a1;
+  transform: scale(1.05);
+}
+
+.crud-logica-boton-eliminar {
+  background: #d32f2f;
+}
+
+.crud-logica-boton-eliminar:hover {
+  background: #b71c1c;
+  transform: scale(1.05);
+}
+
+.crud-logica-boton-guardar {
+  background: #388e3c;
+}
+
+.crud-logica-boton-guardar:hover {
+  background: #2e7d32;
+  transform: scale(1.05);
+}
+
+/* ✏️ Campo de edición */
+.crud-logica-edicion {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.crud-logica-input-editar {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+}
+
+.crud-logica-input-editar:focus {
+  border-color: #1976d2;
+  outline: none;
+  box-shadow: 0 0 6px rgba(25, 118, 210, 0.3);
+}
+
+/* 📱 Responsive */
+@media (max-width: 600px) {
+  .crud-logica-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .crud-logica-formulario {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .crud-logica-item-contenido {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .crud-logica-botones {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .crud-logica-boton-editar,
+  .crud-logica-boton-eliminar {
+    flex: 1;
+  }
 }
