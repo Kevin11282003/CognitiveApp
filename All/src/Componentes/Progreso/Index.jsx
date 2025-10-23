@@ -44,7 +44,7 @@ export default function Progreso({ usuarioId }) {
       }
     
       obtenerApiKey();
-      
+
     if (usuarioId) cargarDatos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usuarioId]);
@@ -165,10 +165,10 @@ export default function Progreso({ usuarioId }) {
   };
 
     const generarReportePDF = async () => {
-    if (!API_KEY) {
-      alert("Falta la API Key de Gemini.");
+if (!API_KEY) {
+      setError("No se pudo cargar la API_KEY desde la base de datos.");
       return;
-    }
+    } 
     setGenerandoPDF(true);
 
      try {
